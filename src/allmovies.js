@@ -7,7 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import styled from 'styled-components'
 
-import movieGenres from './movieGenres.json';
+import movieGenres from './static-json/movieGenres.json';
 
 const ListCaptain = styled(List)`
   height: 100%;

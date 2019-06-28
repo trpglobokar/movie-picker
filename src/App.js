@@ -1,17 +1,14 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import AllMovies from "./allmovies"
-import ToggleSeenBy from "./toggleSeenBy"
-import ToggleGenre from "./toggleGenre"
+import ToggleSeenBy from "./pickers/toggleSeenBy"
+import ToggleGenre from "./pickers/toggleGenre"
 import "./App.css"
 import styled from "styled-components"
 
 import Button from "@material-ui/core/Button"
-
-import movieList from "./customData.json"
 
 const AppContainer = styled.div`
   background: #7ec5b4;
@@ -86,7 +83,6 @@ class App extends Component {
 
     const newMovie =
       movies[Math.floor(Math.random() * Math.floor(movies.length))]
-    console.log("this", this)
 
     this.setState({ recommendedMovie: newMovie })
   }
@@ -120,14 +116,9 @@ class App extends Component {
       currentGenres.push(toggleBy)
     }
 
-    console.log("this.state.movies", this.state.movies)
     let filteredMovies = this.state.movies.filter(movie =>
       currentGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
-      //.every(val => PlayerOne.includes(val))
-
-      //movie.genre_ids.includes(parseInt(toggleBy))
     )
-    //let filteredMovies = this.state.movies.filter(movie => currentGenres.includes(movie.seenBy))
 
     this.setState({
       selectedGenres: currentGenres,
@@ -136,8 +127,6 @@ class App extends Component {
   }
 
   render() {
-    console.log("this", this)
-    console.log("this.state", this.state)
     if (!this.state.isLoaded) {
       return <div>Loading...</div>
     }
