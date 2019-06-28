@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AllMovies from './allmovies'
 import ToggleSeenBy from './toggleSeenBy'
+import ToggleGenre from './toggleGenre'
 import './App.css';
 import styled from 'styled-components'
 
@@ -46,6 +47,7 @@ class App extends Component {
       isLoaded: false,
       recommendedMovie: "",
       seenBy: ["Jake", "Rocky"],
+      selectedGenres: [],
     }
 
   }
@@ -106,9 +108,32 @@ class App extends Component {
     this.setState({"seenBy": currentSeenBy, "filteredMovies": filteredMovies})
   }
 
+  toggleGenre = event => {
+    const toggleBy = event.currentTarget.value
+
+    let currentGenres = this.state.selectedGenres
+
+    if (currentGenres.includes(toggleBy)){
+      currentGenres = currentGenres.filter(g => g !== toggleBy)
+    } else {
+      currentGenres.push(toggleBy)
+    }
+
+    console.log("this.state.movies", this.state.movies)
+    let filteredMovies = this.state.movies.filter(movie => movie.genre_ids.includes(parseInt(toggleBy)))
+    //let filteredMovies = this.state.movies.filter(movie => currentGenres.includes(movie.seenBy))
+
+
+    this.setState({
+      "selectedGenres": currentGenres,
+      "filteredMovies": filteredMovies
+    })
+  }
+
 
   render() {
     console.log("this", this)
+    console.log("this.state", this.state)
     if(!this.state.isLoaded){
       return (<div>Loading...</div>)
     }
@@ -121,6 +146,10 @@ class App extends Component {
               <ToggleSeenBy
                 seenBy={this.state.seenBy}
                 toggleSeenBy={this.toggleSeenBy}
+              />
+              <ToggleGenre
+                selectedGenres={this.state.selectedGenres}
+                toggleGenre={this.toggleGenre}
               />
             </FullLengthPaper>
           </Grid>
