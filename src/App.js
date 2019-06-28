@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import AllMovies from './allmovies'
-import ToggleSeenBy from './toggleSeenBy'
-import ToggleGenre from './toggleGenre'
-import './App.css';
-import styled from 'styled-components'
+import React, { Component } from "react"
+import PropTypes from "prop-types"
+import { withStyles } from "@material-ui/core/styles"
+import Grid from "@material-ui/core/Grid"
+import Paper from "@material-ui/core/Paper"
+import AllMovies from "./allmovies"
+import ToggleSeenBy from "./toggleSeenBy"
+import ToggleGenre from "./toggleGenre"
+import "./App.css"
+import styled from "styled-components"
 
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button"
 
-import movieList from './customData.json';
+import movieList from "./customData.json"
 
 const AppContainer = styled.div`
   background: #7ec5b4;
@@ -20,7 +20,7 @@ const AppContainer = styled.div`
 
 const GridCaptain = styled(Grid)`
   height: calc(100vh - 32px);
-  padding: 16px!important;
+  padding: 16px !important;
 `
 
 const FullLengthPaper = styled(Paper)`
@@ -30,14 +30,14 @@ const FullLengthPaper = styled(Paper)`
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   paper: {
     padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-});
+    textAlign: "center",
+    color: theme.palette.text.secondary
+  }
+})
 
 class App extends Component {
   constructor(props) {
@@ -47,17 +47,17 @@ class App extends Component {
       isLoaded: false,
       recommendedMovie: "",
       seenBy: ["Jake", "Rocky"],
-      selectedGenres: [],
+      selectedGenres: []
     }
-
   }
 
   componentDidMount() {
-    fetch("https://api.themoviedb.org/4/list/108073?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US")
+    fetch(
+      "https://api.themoviedb.org/4/list/108073?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US"
+    )
       .then(res => res.json())
       .then(
-        (result) => {
-
+        result => {
           const movies = result.results.map(movie => {
             movie.seenBy = result.comments["movie:" + movie.id]
             return movie
@@ -66,29 +66,29 @@ class App extends Component {
           this.setState({
             isLoaded: true,
             movies: movies,
-            filteredMovies: movies,
-          });
+            filteredMovies: movies
+          })
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
-        (error) => {
+        error => {
           this.setState({
             isLoaded: true,
             error
-          });
+          })
         }
       )
   }
 
-
   handleClick = event => {
     let movies = this.state.filteredMovies
 
-    const newMovie = movies[Math.floor(Math.random() * Math.floor(movies.length))]
+    const newMovie =
+      movies[Math.floor(Math.random() * Math.floor(movies.length))]
     console.log("this", this)
 
-    this.setState({"recommendedMovie": newMovie})
+    this.setState({ recommendedMovie: newMovie })
   }
 
   toggleSeenBy = event => {
@@ -96,16 +96,17 @@ class App extends Component {
 
     let currentSeenBy = this.state.seenBy
 
-    if (currentSeenBy.includes(toggleBy)){
+    if (currentSeenBy.includes(toggleBy)) {
       currentSeenBy = currentSeenBy.filter(csb => csb !== toggleBy)
     } else {
       currentSeenBy.push(toggleBy)
     }
 
-    let filteredMovies = this.state.movies.filter(movie => currentSeenBy.includes(movie.seenBy))
+    let filteredMovies = this.state.movies.filter(movie =>
+      currentSeenBy.includes(movie.seenBy)
+    )
 
-
-    this.setState({"seenBy": currentSeenBy, "filteredMovies": filteredMovies})
+    this.setState({ seenBy: currentSeenBy, filteredMovies: filteredMovies })
   }
 
   toggleGenre = event => {
@@ -113,29 +114,32 @@ class App extends Component {
 
     let currentGenres = this.state.selectedGenres
 
-    if (currentGenres.includes(toggleBy)){
+    if (currentGenres.includes(toggleBy)) {
       currentGenres = currentGenres.filter(g => g !== toggleBy)
     } else {
       currentGenres.push(toggleBy)
     }
 
     console.log("this.state.movies", this.state.movies)
-    let filteredMovies = this.state.movies.filter(movie => movie.genre_ids.includes(parseInt(toggleBy)))
+    let filteredMovies = this.state.movies.filter(movie =>
+      currentGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
+      //.every(val => PlayerOne.includes(val))
+
+      //movie.genre_ids.includes(parseInt(toggleBy))
+    )
     //let filteredMovies = this.state.movies.filter(movie => currentGenres.includes(movie.seenBy))
 
-
     this.setState({
-      "selectedGenres": currentGenres,
-      "filteredMovies": filteredMovies
+      selectedGenres: currentGenres,
+      filteredMovies: filteredMovies
     })
   }
-
 
   render() {
     console.log("this", this)
     console.log("this.state", this.state)
-    if(!this.state.isLoaded){
-      return (<div>Loading...</div>)
+    if (!this.state.isLoaded) {
+      return <div>Loading...</div>
     }
 
     return (
@@ -160,14 +164,27 @@ class App extends Component {
           </Grid>
           <Grid item xs={4}>
             <FullLengthPaper>
-              <Button  variant="contained" color="primary" onClick={this.handleClick}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleClick}
+              >
                 Activate Lasers
               </Button>
               <br />
               <br />
 
               <div>THE RECOMMENDED MOVIE</div>
-              <div style={{"height": "500px", "width": "320px", "backgroundImage": "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" + this.state.recommendedMovie.poster_path+")"}} />
+              <div
+                style={{
+                  height: "500px",
+                  width: "320px",
+                  backgroundImage:
+                    "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" +
+                    this.state.recommendedMovie.poster_path +
+                    ")"
+                }}
+              />
               <div>{this.state.recommendedMovie.title}</div>
             </FullLengthPaper>
           </Grid>
@@ -177,4 +194,4 @@ class App extends Component {
   }
 }
 
-export default withStyles(styles)(App);
+export default withStyles(styles)(App)
