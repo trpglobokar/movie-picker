@@ -13,11 +13,18 @@ import Button from '@material-ui/core/Button';
 import movieList from './customData.json';
 
 const AppContainer = styled.div`
-  background: #144665;
+  background: #7ec5b4;
+  height: 100vh;
+`
+
+const GridCaptain = styled(Grid)`
+  height: calc(100vh - 32px);
+  padding: 16px!important;
 `
 
 const FullLengthPaper = styled(Paper)`
-  height: 100vh;
+  height: calc(100vh - 32px);
+  overflow: hidden;
 `
 
 const styles = theme => ({
@@ -108,8 +115,8 @@ class App extends Component {
 
     return (
       <AppContainer>
-        <Grid container spacing={16}>
-          <Grid item xs={3}>
+        <GridCaptain container spacing={16}>
+          <Grid item xs={4}>
             <FullLengthPaper>
               <ToggleSeenBy
                 seenBy={this.state.seenBy}
@@ -117,7 +124,12 @@ class App extends Component {
               />
             </FullLengthPaper>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
+            <FullLengthPaper>
+              <AllMovies movies={this.state.filteredMovies} />
+            </FullLengthPaper>
+          </Grid>
+          <Grid item xs={4}>
             <FullLengthPaper>
               <Button  variant="contained" color="primary" onClick={this.handleClick}>
                 Activate Lasers
@@ -126,16 +138,11 @@ class App extends Component {
               <br />
 
               <div>THE RECOMMENDED MOVIE</div>
-              <div style={{"height": "556px", "width": "370px", "backgroundImage": "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" + this.state.recommendedMovie.poster_path+")"}} />
+              <div style={{"height": "500px", "width": "320px", "backgroundImage": "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" + this.state.recommendedMovie.poster_path+")"}} />
               <div>{this.state.recommendedMovie.title}</div>
             </FullLengthPaper>
           </Grid>
-          <Grid item xs={3}>
-            <FullLengthPaper>
-              <AllMovies movies={this.state.filteredMovies} />
-            </FullLengthPaper>
-          </Grid>
-        </Grid>
+        </GridCaptain>
       </AppContainer>
     )
   }

@@ -5,9 +5,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components'
 
 import movieGenres from './movieGenres.json';
 
+const ListCaptain = styled(List)`
+  height: 100%;
+  overflow: scroll;
+`
 
 class AllMovies extends Component {
   constructor(props) {
@@ -18,7 +23,7 @@ class AllMovies extends Component {
   render() {
 
     return (
-      <List>
+      <ListCaptain>
         FULL MOVIE LIST
         {this.props.movies.map(movie => {
           const genreIDs = movie.genre_ids
@@ -36,7 +41,7 @@ class AllMovies extends Component {
             </ListItem>
           )
         })}
-      </List>
+      </ListCaptain>
     )
   }
 }
