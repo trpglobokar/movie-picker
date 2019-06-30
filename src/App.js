@@ -17,13 +17,22 @@ const AppContainer = styled.div`
 `
 
 const GridCaptain = styled(Grid)`
-  height: calc(100vh - 32px);
-  padding: 16px !important;
 `
 
 const FullLengthPaper = styled(Paper)`
-  height: calc(100vh - 32px);
-  overflow: hidden;
+`
+const PickerWrapper = styled.div`
+  height: 100vh;
+  overflow: scroll;
+  background-color: white;
+  box-shadow: 0px 0px 20px #00000057;
+  padding: 16px;
+`
+
+const MovieListWrapper = styled.div`
+  margin: 32px;
+  max-height: calc(100vh - 64px);
+  overflow: scroll;
 `
 
 const styles = theme => ({
@@ -155,28 +164,30 @@ class App extends Component {
       <AppContainer>
         <GridCaptain container spacing={16}>
           <Grid item xs={4}>
-            <FullLengthPaper>
-              {/*<ToggleSeenBy
-                seenBy={this.state.seenBy}
-                toggleSeenBy={this.toggleSeenBy}
-              />*/}
-              <RatingSelector
-                selectedRating={this.state.selectedRating}
-                setRating={this.setRating}
+            <PickerWrapper>
+            {/*<ToggleSeenBy
+              seenBy={this.state.seenBy}
+              toggleSeenBy={this.toggleSeenBy}
+            />*/}
+            <RatingSelector
+              selectedRating={this.state.selectedRating}
+              setRating={this.setRating}
+            />
+            <ToggleGenre
+              selectedGenres={this.state.selectedGenres}
+              toggleGenre={this.setGenre}
               />
-              <ToggleGenre
-                selectedGenres={this.state.selectedGenres}
-                toggleGenre={this.setGenre}
-              />
-              
-            </FullLengthPaper>
+            </PickerWrapper>
           </Grid>
-          <Grid item xs={4}>
-            <FullLengthPaper>
-              <AllMovies movies={this.state.filteredMovies} />
-            </FullLengthPaper>
+          <Grid item xs={8}>
+            <MovieListWrapper>
+              <h2>Movie List</h2>
+              <Paper>
+                <AllMovies movies={this.state.filteredMovies} />
+              </Paper>
+            </MovieListWrapper>
           </Grid>
-          <Grid item xs={4}>
+          {/* <Grid item xs={4}>
             <FullLengthPaper>
               <Button
                 variant="contained"
@@ -201,7 +212,7 @@ class App extends Component {
               />
               <div>{this.state.recommendedMovie.title}</div>
             </FullLengthPaper>
-          </Grid>
+          </Grid> */}
         </GridCaptain>
       </AppContainer>
     )
