@@ -45,38 +45,39 @@ class App extends Component {
       isLoaded: false,
       recommendedMovie: "",
       seenBy: ["Jake", "Rocky"],
-      selectedGenres: []
+      selectedGenres: [],
+      selectedRating: 1
     }
   }
 
   componentDidMount() {
-    fetch(
-      "https://api.themoviedb.org/4/list/108073?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US"
-    )
-      .then(res => res.json())
-      .then(
-        result => {
-          const movies = result.results.map(movie => {
-            movie.seenBy = result.comments["movie:" + movie.id]
-            return movie
-          })
+    let totalMovies = []
+    let url = "https://api.themoviedb.org/4/list/108073?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US"
+    const this2 = this
 
-          this.setState({
-            isLoaded: true,
-            movies: movies,
-            filteredMovies: movies
-          })
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          })
-        }
-      )
+    //TODO: make this looped, not hardcoded
+    fetch(url, {
+      method: 'get',
+    }).then(function(response) {
+      return response.json(); // pass the data as promise to next then block
+    }).then(function(data) {
+      totalMovies = totalMovies.concat(data.results)
+      return fetch(url+"&page=2")
+    })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(data) {
+      totalMovies = totalMovies.concat(data.results)
+      this2.setState({
+        isLoaded: true,
+        movies: totalMovies,
+        filteredMovies: totalMovies
+      })
+    })
+    .catch(function(error) {
+      console.log('Request failed', error)
+    })
   }
 
   handleClick = event => {
@@ -106,36 +107,41 @@ class App extends Component {
     this.setState({ seenBy: currentSeenBy, filteredMovies: filteredMovies })
   }
 
-  toggleGenre = event => {
+  setGenre = event => {
     const toggleBy = event.currentTarget.value
 
-    let currentGenres = this.state.selectedGenres
+    let newGenres = this.state.selectedGenres
 
-    if (currentGenres.includes(toggleBy)) {
-      currentGenres = currentGenres.filter(g => g !== toggleBy)
+    if (newGenres.includes(toggleBy)) {
+      newGenres = newGenres.filter(g => g !== toggleBy)
     } else {
-      currentGenres.push(toggleBy)
+      newGenres.push(toggleBy)
     }
 
-    let filteredMovies = this.state.movies.filter(movie =>
-      currentGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
-    )
+    const filteredMovies = this.filterDaMovies(newGenres, this.state.selectedRating)
 
     this.setState({
-      selectedGenres: currentGenres,
+      selectedGenres: newGenres,
       filteredMovies: filteredMovies
     })
   }
 
-  setRating = event => {
-    console.log("EVENT", event)
+  filterDaMovies(selectedGenres, selectedRating){
+    const movies = this.state.movies
+      .filter(movie =>
+        movie.vote_average > selectedRating
+      )
+      .filter(movie =>
+        selectedGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
+      )
+    return movies
+  }
 
-    let filteredMovies = this.state.movies.filter(movie =>
-      movie.vote_average > event
-    )
+  setRating = newRating => {
+    const filteredMovies = this.filterDaMovies(this.state.selectedGenres, newRating)
 
     this.setState({
-      selectedRating: event,
+      selectedRating: newRating,
       filteredMovies: filteredMovies
     })
   }
@@ -160,7 +166,7 @@ class App extends Component {
               />
               <ToggleGenre
                 selectedGenres={this.state.selectedGenres}
-                toggleGenre={this.toggleGenre}
+                toggleGenre={this.setGenre}
               />
               
             </FullLengthPaper>
