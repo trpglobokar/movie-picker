@@ -136,14 +136,15 @@ class App extends Component {
         <GridCaptain container spacing={16}>
           <Grid item xs={4}>
             <FullLengthPaper>
-              <ToggleSeenBy
+              {/*<ToggleSeenBy
                 seenBy={this.state.seenBy}
                 toggleSeenBy={this.toggleSeenBy}
-              />
+              />*/}
               <ToggleGenre
                 selectedGenres={this.state.selectedGenres}
                 toggleGenre={this.toggleGenre}
               />
+              
             </FullLengthPaper>
           </Grid>
           <Grid item xs={4}>

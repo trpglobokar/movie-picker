@@ -16,12 +16,12 @@ class ToggleSeenBy extends Component {
 
       return (
         <FormControlLabel
-          key={peep}
+          key={peep.id}
           control={
             <Checkbox
               checked={this.props.selectedGenres.includes(peep.id.toString())}
               onChange={this.props.toggleGenre}
-              value={peep.id}
+              value={peep.id.toString()}
             />
           }
           label={peep.name}

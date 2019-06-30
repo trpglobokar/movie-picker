@@ -30,7 +30,7 @@ class AllMovies extends Component {
           const genreNames = genreIDs.map(id => movieGenres.genres.find(genre => genre.id === id).name)
 
           return (
-            <ListItem alignItems="flex-start">
+            <ListItem key={movie.id} alignItems="flex-start">
               <ListItemAvatar>
                 <Avatar src={"https://image.tmdb.org/t/p/w370_and_h556_bestv2" + movie.backdrop_path} />
               </ListItemAvatar>
