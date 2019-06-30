@@ -3,6 +3,7 @@ import { withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import AllMovies from "./allmovies"
+import RatingSelector from "./pickers/ratingSelector"
 import ToggleSeenBy from "./pickers/toggleSeenBy"
 import ToggleGenre from "./pickers/toggleGenre"
 import "./App.css"
@@ -126,6 +127,19 @@ class App extends Component {
     })
   }
 
+  setRating = event => {
+    console.log("EVENT", event)
+
+    let filteredMovies = this.state.movies.filter(movie =>
+      movie.vote_average > event
+    )
+
+    this.setState({
+      selectedRating: event,
+      filteredMovies: filteredMovies
+    })
+  }
+
   render() {
     if (!this.state.isLoaded) {
       return <div>Loading...</div>
@@ -140,6 +154,10 @@ class App extends Component {
                 seenBy={this.state.seenBy}
                 toggleSeenBy={this.toggleSeenBy}
               />*/}
+              <RatingSelector
+                selectedRating={this.state.selectedRating}
+                setRating={this.setRating}
+              />
               <ToggleGenre
                 selectedGenres={this.state.selectedGenres}
                 toggleGenre={this.toggleGenre}

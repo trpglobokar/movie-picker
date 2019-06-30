@@ -26,6 +26,9 @@ class AllMovies extends Component {
       <ListCaptain>
         FULL MOVIE LIST
         {this.props.movies.map(movie => {
+          console.log("movie", movie)
+
+
           const genreIDs = movie.genre_ids
           const genreNames = genreIDs.map(id => movieGenres.genres.find(genre => genre.id === id).name)
 
