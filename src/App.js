@@ -3,30 +3,15 @@ import { withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
 import AllMovies from "./allmovies"
-import RatingSelector from "./pickers/ratingSelector"
-import ToggleSeenBy from "./pickers/toggleSeenBy"
-import ToggleGenre from "./pickers/toggleGenre"
+import ToggleMaster from "./pickers/toggleMaster"
 import "./App.css"
 import styled from "styled-components"
 
-import Button from "@material-ui/core/Button"
+import RandomSelect from "./randomSelect"
 
 const AppContainer = styled.div`
   background: #7ec5b4;
   height: 100vh;
-`
-
-const GridCaptain = styled(Grid)`
-`
-
-const FullLengthPaper = styled(Paper)`
-`
-const PickerWrapper = styled.div`
-  height: 100vh;
-  overflow: scroll;
-  background-color: white;
-  box-shadow: 0px 0px 20px #00000057;
-  padding: 16px;
 `
 
 const MovieListWrapper = styled.div`
@@ -89,52 +74,6 @@ class App extends Component {
     })
   }
 
-  handleClick = event => {
-    let movies = this.state.filteredMovies
-
-    const newMovie =
-      movies[Math.floor(Math.random() * Math.floor(movies.length))]
-
-    this.setState({ recommendedMovie: newMovie })
-  }
-
-  toggleSeenBy = event => {
-    const toggleBy = event.currentTarget.value
-
-    let currentSeenBy = this.state.seenBy
-
-    if (currentSeenBy.includes(toggleBy)) {
-      currentSeenBy = currentSeenBy.filter(csb => csb !== toggleBy)
-    } else {
-      currentSeenBy.push(toggleBy)
-    }
-
-    let filteredMovies = this.state.movies.filter(movie =>
-      currentSeenBy.includes(movie.seenBy)
-    )
-
-    this.setState({ seenBy: currentSeenBy, filteredMovies: filteredMovies })
-  }
-
-  setGenre = event => {
-    const toggleBy = event.currentTarget.value
-
-    let newGenres = this.state.selectedGenres
-
-    if (newGenres.includes(toggleBy)) {
-      newGenres = newGenres.filter(g => g !== toggleBy)
-    } else {
-      newGenres.push(toggleBy)
-    }
-
-    const filteredMovies = this.filterDaMovies(newGenres, this.state.selectedRating)
-
-    this.setState({
-      selectedGenres: newGenres,
-      filteredMovies: filteredMovies
-    })
-  }
-
   filterDaMovies(selectedGenres, selectedRating){
     const movies = this.state.movies
       .filter(movie =>
@@ -146,15 +85,6 @@ class App extends Component {
     return movies
   }
 
-  setRating = newRating => {
-    const filteredMovies = this.filterDaMovies(this.state.selectedGenres, newRating)
-
-    this.setState({
-      selectedRating: newRating,
-      filteredMovies: filteredMovies
-    })
-  }
-
   render() {
     if (!this.state.isLoaded) {
       return <div>Loading...</div>
@@ -162,22 +92,21 @@ class App extends Component {
 
     return (
       <AppContainer>
-        <GridCaptain container spacing={16}>
+        <Grid container spacing={16}>
           <Grid item xs={4}>
-            <PickerWrapper>
-            {/*<ToggleSeenBy
-              seenBy={this.state.seenBy}
-              toggleSeenBy={this.toggleSeenBy}
-            />*/}
-            <RatingSelector
+            <ToggleMaster
               selectedRating={this.state.selectedRating}
-              setRating={this.setRating}
-            />
-            <ToggleGenre
               selectedGenres={this.state.selectedGenres}
-              toggleGenre={this.setGenre}
-              />
-            </PickerWrapper>
+              updateSelections={(selectedGenres, selectedRating) => {
+                const filteredMovies = this.filterDaMovies(selectedGenres, selectedRating)
+
+                this.setState({
+                  selectedGenres,
+                  selectedRating,
+                  filteredMovies
+                })
+              }}
+            />
           </Grid>
           <Grid item xs={8}>
             <MovieListWrapper>
@@ -213,7 +142,10 @@ class App extends Component {
               <div>{this.state.recommendedMovie.title}</div>
             </FullLengthPaper>
           </Grid> */}
-        </GridCaptain>
+        </Grid>
+        <RandomSelect
+            filteredMovies={this.state.filteredMovies}
+          />
       </AppContainer>
     )
   }
