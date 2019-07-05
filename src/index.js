@@ -1,3 +1,4 @@
 import MoviePicker from "./App"
+import RatingSelector from "./pickers/ratingSelector"
 
-export { MoviePicker }
+export { MoviePicker, RatingSelector }
