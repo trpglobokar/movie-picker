@@ -9,7 +9,7 @@ module.exports = {
     entry: path.join(__dirname, "example/src/index.js"),
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'movie-picker.bundle.js'
+        filename: 'index.js'
     },
     module: {
         rules: [
