@@ -31,7 +31,7 @@ const styles = theme => ({
   }
 })
 
-class App extends Component {
+class MoviePicker extends Component {
   constructor(props) {
     super(props)
 
@@ -116,39 +116,13 @@ class App extends Component {
               </Paper>
             </MovieListWrapper>
           </Grid>
-          {/* <Grid item xs={4}>
-            <FullLengthPaper>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={this.handleClick}
-              >
-                Activate Lasers
-              </Button>
-              <br />
-              <br />
-
-              <div>THE RECOMMENDED MOVIE</div>
-              <div
-                style={{
-                  height: "500px",
-                  width: "320px",
-                  backgroundImage:
-                    "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" +
-                    this.state.recommendedMovie.poster_path +
-                    ")"
-                }}
-              />
-              <div>{this.state.recommendedMovie.title}</div>
-            </FullLengthPaper>
-          </Grid> */}
         </Grid>
         <RandomSelect
             filteredMovies={this.state.filteredMovies}
-          />
+        />
       </AppContainer>
     )
   }
 }
 
-export default withStyles(styles)(App)
+export default withStyles(styles)(MoviePicker)
