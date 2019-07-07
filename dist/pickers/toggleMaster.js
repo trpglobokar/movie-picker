@@ -28,7 +28,7 @@ var _taggedTemplateLiteral2 = require("babel-runtime/helpers/taggedTemplateLiter
 
 var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
 
-var _templateObject = (0, _taggedTemplateLiteral3.default)(["\n  height: 100vh;\n  overflow: scroll;\n  background-color: white;\n  box-shadow: 0px 0px 20px #00000057;\n  padding: 16px;\n"], ["\n  height: 100vh;\n  overflow: scroll;\n  background-color: white;\n  box-shadow: 0px 0px 20px #00000057;\n  padding: 16px;\n"]);
+var _templateObject = (0, _taggedTemplateLiteral3.default)(["\n  height: calc(100vh - 32px);\n  overflow: scroll;\n  background-color: white;\n  box-shadow: 0px 0px 20px #00000057;\n  padding: 16px;\n"], ["\n  height: calc(100vh - 32px);\n  overflow: scroll;\n  background-color: white;\n  box-shadow: 0px 0px 20px #00000057;\n  padding: 16px;\n"]);
 //import ToggleSeenBy from "./pickers/toggleSeenBy"
 
 

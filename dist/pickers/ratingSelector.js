@@ -24,6 +24,12 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
+var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+
+var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n  margin-bottom: 32px;\n'], ['\n  margin-bottom: 32px;\n']);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -32,7 +38,15 @@ var _Slider = require('@material-ui/lab/Slider');
 
 var _Slider2 = _interopRequireDefault(_Slider);
 
+var _core = require('@material-ui/core');
+
+var _styledComponents = require('styled-components');
+
+var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RatingWrapper = _styledComponents2.default.div(_templateObject);
 
 var RatingSelector = function (_Component) {
   (0, _inherits3.default)(RatingSelector, _Component);
@@ -53,11 +67,16 @@ var RatingSelector = function (_Component) {
           setRating = _props.setRating;
 
       return _react2.default.createElement(
-        'div',
+        RatingWrapper,
         null,
+        _react2.default.createElement(
+          _core.Typography,
+          { variant: 'h6' },
+          'Minimum Rating: ',
+          selectedRating,
+          '/10'
+        ),
         _react2.default.createElement('br', null),
-        'Minimum Rating: ',
-        selectedRating,
         _react2.default.createElement(_Slider2.default, {
           value: selectedRating,
           onChange: function onChange(_event, value) {

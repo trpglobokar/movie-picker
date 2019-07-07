@@ -24,13 +24,16 @@ var _inherits2 = require('babel-runtime/helpers/inherits');
 
 var _inherits3 = _interopRequireDefault(_inherits2);
 
+var _taggedTemplateLiteral2 = require('babel-runtime/helpers/taggedTemplateLiteral');
+
+var _taggedTemplateLiteral3 = _interopRequireDefault(_taggedTemplateLiteral2);
+
+var _templateObject = (0, _taggedTemplateLiteral3.default)(['\n  width: 100%;\n'], ['\n  width: 100%;\n']),
+    _templateObject2 = (0, _taggedTemplateLiteral3.default)(['\n  max-height: 400px;\n  width: 100%;\n  overflow: scroll;\n'], ['\n  max-height: 400px;\n  width: 100%;\n  overflow: scroll;\n']);
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
-
-var _FormLabel = require('@material-ui/core/FormLabel');
-
-var _FormLabel2 = _interopRequireDefault(_FormLabel);
 
 var _FormControl = require('@material-ui/core/FormControl');
 
@@ -48,29 +51,37 @@ var _Checkbox = require('@material-ui/core/Checkbox');
 
 var _Checkbox2 = _interopRequireDefault(_Checkbox);
 
-var _movieGenres = require('../static-json/movieGenres.json');
+var _core = require('@material-ui/core');
+
+var _movieGenres = require('../static/movieGenres.json');
 
 var _movieGenres2 = _interopRequireDefault(_movieGenres);
 
+var _styledComponents = require('styled-components');
+
+var _styledComponents2 = _interopRequireDefault(_styledComponents);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var ToggleSeenBy = function (_Component) {
-  (0, _inherits3.default)(ToggleSeenBy, _Component);
+var SuperFormControl = (0, _styledComponents2.default)(_FormControl2.default)(_templateObject);
 
-  function ToggleSeenBy() {
-    (0, _classCallCheck3.default)(this, ToggleSeenBy);
-    return (0, _possibleConstructorReturn3.default)(this, (ToggleSeenBy.__proto__ || (0, _getPrototypeOf2.default)(ToggleSeenBy)).apply(this, arguments));
+var Genres = _styledComponents2.default.div(_templateObject2);
+
+var ToggleGenre = function (_Component) {
+  (0, _inherits3.default)(ToggleGenre, _Component);
+
+  function ToggleGenre() {
+    (0, _classCallCheck3.default)(this, ToggleGenre);
+    return (0, _possibleConstructorReturn3.default)(this, (ToggleGenre.__proto__ || (0, _getPrototypeOf2.default)(ToggleGenre)).apply(this, arguments));
   }
 
-  (0, _createClass3.default)(ToggleSeenBy, [{
+  (0, _createClass3.default)(ToggleGenre, [{
     key: 'renderFormGroup',
     value: function renderFormGroup() {
       var _this2 = this;
 
       var peepsInvolved = _movieGenres2.default.genres;
-
       var jones = peepsInvolved.map(function (peep) {
-
         return _react2.default.createElement(_FormControlLabel2.default, {
           key: peep.id,
           control: _react2.default.createElement(_Checkbox2.default, {
@@ -96,19 +107,23 @@ var ToggleSeenBy = function (_Component) {
         'div',
         null,
         _react2.default.createElement(
-          _FormControl2.default,
+          SuperFormControl,
           { component: 'fieldset' },
           _react2.default.createElement(
-            _FormLabel2.default,
-            { component: 'legend' },
+            _core.Typography,
+            { variant: 'h6' },
             'Genres'
           ),
-          this.renderFormGroup()
+          _react2.default.createElement(
+            Genres,
+            null,
+            this.renderFormGroup()
+          )
         )
       );
     }
   }]);
-  return ToggleSeenBy;
+  return ToggleGenre;
 }(_react.Component);
 
-exports.default = ToggleSeenBy;
+exports.default = ToggleGenre;

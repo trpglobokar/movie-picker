@@ -1,5 +1,11 @@
 import React, { Component } from 'react'
 import Slider from '@material-ui/lab/Slider';
+import { Typography } from "@material-ui/core"
+import styled from "styled-components"
+
+const RatingWrapper = styled.div`
+  margin-bottom: 32px;
+`
 
 class RatingSelector extends Component {
 
@@ -7,9 +13,9 @@ class RatingSelector extends Component {
   render() {
     const { selectedRating, setRating } = this.props
     return (
-      <div>
+      <RatingWrapper>
+        <Typography variant="h6">Minimum Rating: {selectedRating}/10</Typography>
         <br />
-        Minimum Rating: {selectedRating}
         <Slider
           value={selectedRating}
           onChange={(_event, value) => {
@@ -20,7 +26,7 @@ class RatingSelector extends Component {
           min={1}
           max={10}
         />
-      </div>
+      </RatingWrapper>
     )
   }
 }

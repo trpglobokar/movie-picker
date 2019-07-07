@@ -1,21 +1,31 @@
 import React, { Component } from 'react'
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { Typography } from '@material-ui/core'
 
 import movieGenres from '../static/movieGenres.json';
 
-class ToggleSeenBy extends Component {
+import styled from "styled-components"
+
+const SuperFormGroup = styled(FormGroup)`
+  flex-direction: row!important;
+`
+const SuperFormControl = styled(FormControl)`
+  width: 100%;
+`
+const SuperFormControlLabel = styled(FormControlLabel)`
+  min-width: 160px;
+`
+
+class ToggleGenre extends Component {
 
   renderFormGroup(){
     const peepsInvolved = movieGenres.genres
-
     const jones = peepsInvolved.map(peep => {
-
       return (
-        <FormControlLabel
+        <SuperFormControlLabel
           key={peep.id}
           control={
             <Checkbox
@@ -30,9 +40,9 @@ class ToggleSeenBy extends Component {
     })
 
     return (
-      <FormGroup>
+      <SuperFormGroup>
         {jones}
-      </FormGroup>
+      </SuperFormGroup>
     )
   }
 
@@ -40,13 +50,13 @@ class ToggleSeenBy extends Component {
     console.log("this.props", this.props)
     return (
       <div>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Genres</FormLabel>
+        <SuperFormControl component="fieldset">
+          <Typography variant="h6">Genres</Typography>
           {this.renderFormGroup()}
-        </FormControl>
+        </SuperFormControl>
       </div>
     )
   }
 }
 
-export default ToggleSeenBy
+export default ToggleGenre

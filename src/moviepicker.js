@@ -9,9 +9,33 @@ import styled from "styled-components"
 
 import RandomSelect from "./renders/randomSelect"
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import './static/fonts.css'
+import { Typography } from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#3B7080" }, // Purple and green play nicely together.
+    secondary: { main: "#ADE25D" }, // This is just green.A700 as hex.
+  },
+  typography: {
+    fontFamily: [
+      'Raleway',
+      'typeface-roboto',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+    useNextVariants: true
+  },
+});
+
 const AppContainer = styled.div`
-  background: #7ec5b4;
-  height: 100vh;
+  height: 100%;
 `
 
 const MovieListWrapper = styled.div`
@@ -60,10 +84,6 @@ class MoviePicker extends React.Component {
       filteredMovies: totalMovies
     })
 
-    //console.log("json", json)
-
-    //TODO: find another non-fetch, and/or something that works with npm packages/modules/whatever they're called, i cant think in words right now
-
     //TODO: make this looped, not hardcoded
     /*fetch(url, {
       method: 'get',
@@ -106,8 +126,9 @@ class MoviePicker extends React.Component {
     }
 
     return (
+      <MuiThemeProvider theme={theme}>
       <AppContainer>
-        <Grid container spacing={16}>
+        <Grid container>
           <Grid item xs={4}>
             <ToggleMaster
               selectedRating={this.state.selectedRating}
@@ -125,10 +146,8 @@ class MoviePicker extends React.Component {
           </Grid>
           <Grid item xs={8}>
             <MovieListWrapper>
-              <h2>Movie List</h2>
-              <Paper>
-                <AllMovies movies={this.state.filteredMovies} />
-              </Paper>
+              <Typography variant="h4">Movie List</Typography>
+              <AllMovies movies={this.state.filteredMovies} />
             </MovieListWrapper>
           </Grid>
         </Grid>
@@ -136,6 +155,7 @@ class MoviePicker extends React.Component {
           filteredMovies={this.state.filteredMovies}
         />
       </AppContainer>
+      </MuiThemeProvider>
     )
   }
 }

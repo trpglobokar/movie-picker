@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Om Shanti Om",
+    "seenBy": "Rocky",
+    "image": "https://upload.wikimedia.org/wikipedia/en/4/41/Om_Shanti_Om.jpg",
+    "genre": ["musical", "comedy"]
+  },
+  {
+    "name": "John Wick",
+    "seenBy": "Jake",
+    "image": "https://cdn.shopify.com/s/files/1/0747/3829/products/mHP0101_1024x1024.jpeg",
+    "genre": ["action"]
+  },
+  {
+    "name": "3 Idiots",
+    "seenBy": "Rocky",
+    "image": "https://upload.wikimedia.org/wikipedia/en/thumb/d/df/3_idiots_poster.jpg/220px-3_idiots_poster.jpg",
+    "genre": ["action"]
+  },
+  {
+    "name": "A Beautiful Mind",
+    "seenBy": "Jake",
+    "image": "https://upload.wikimedia.org/wikipedia/en/thumb/b/b8/A_Beautiful_Mind_Poster.jpg/220px-A_Beautiful_Mind_Poster.jpg",
+    "genre": ["action"]
+  },
+  {
+    "name": "Sing Street",
+    "seenBy": "Jake",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/51YxAdDeV2L.jpg",
+    "genre": ["action"]
+  },
+  {
+    "name": "Nightcrawler",
+    "seenBy": "Jake",
+    "image": "https://images-na.ssl-images-amazon.com/images/I/61H2WTwIhNL._SY550_.jpg",
+    "genre": ["action"]
+  },
+  {
+    "name": "8 Mile",
+    "seenBy": "Jake",
+    "image": "https://m.media-amazon.com/images/M/MV5BOWI3MDIzZmYtN2Y3MC00YTljLWFiYmYtNWIzMjg1ZWQ1ODlhXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+    "genre": ["action"]
+  }
+]
