@@ -1,13 +1,13 @@
-import React, { Component } from "react"
-import { withStyles } from "@material-ui/core/styles"
+import React from "react"
+//import { withStyles } from "@material-ui/core/styles"
 import Grid from "@material-ui/core/Grid"
 import Paper from "@material-ui/core/Paper"
-import AllMovies from "./allmovies"
+import AllMovies from "./renders/allmovies"
 import ToggleMaster from "./pickers/toggleMaster"
-import "./App.css"
+import "./static/app.css"
 import styled from "styled-components"
 
-import RandomSelect from "./randomSelect"
+import RandomSelect from "./renders/randomSelect"
 
 const AppContainer = styled.div`
   background: #7ec5b4;
@@ -20,7 +20,7 @@ const MovieListWrapper = styled.div`
   overflow: scroll;
 `
 
-const styles = theme => ({
+/*const styles = theme => ({
   root: {
     flexGrow: 1
   },
@@ -29,9 +29,10 @@ const styles = theme => ({
     textAlign: "center",
     color: theme.palette.text.secondary
   }
-})
+})*/
 
-class MoviePicker extends Component {
+class MoviePicker extends React.Component {
+//export default function MoviePicker() {
   constructor(props) {
     super(props)
 
@@ -40,17 +41,31 @@ class MoviePicker extends Component {
       recommendedMovie: "",
       seenBy: ["Jake", "Rocky"],
       selectedGenres: [],
-      selectedRating: 1
+      selectedRating: 1,
+      movies: [],
+      filteredMovies: [],
     }
   }
 
-  componentDidMount() {
+  async componentDidMount () {
     let totalMovies = []
     let url = "https://api.themoviedb.org/4/list/108073?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US"
-    const this2 = this
+
+    const response = await fetch(url);
+    const json = await response.json();
+    totalMovies = totalMovies.concat(json.results)
+    this.setState({
+      isLoaded: true,
+      movies: totalMovies,
+      filteredMovies: totalMovies
+    })
+
+    //console.log("json", json)
+
+    //TODO: find another non-fetch, and/or something that works with npm packages/modules/whatever they're called, i cant think in words right now
 
     //TODO: make this looped, not hardcoded
-    fetch(url, {
+    /*fetch(url, {
       method: 'get',
     }).then(function(response) {
       return response.json(); // pass the data as promise to next then block
@@ -71,7 +86,7 @@ class MoviePicker extends Component {
     })
     .catch(function(error) {
       console.log('Request failed', error)
-    })
+    })*/
   }
 
   filterDaMovies(selectedGenres, selectedRating){
@@ -118,11 +133,13 @@ class MoviePicker extends Component {
           </Grid>
         </Grid>
         <RandomSelect
-            filteredMovies={this.state.filteredMovies}
+          filteredMovies={this.state.filteredMovies}
         />
       </AppContainer>
     )
   }
 }
 
-export default withStyles(styles)(MoviePicker)
+export default MoviePicker
+
+//export default withStyles(styles)(MoviePicker)

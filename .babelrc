@@ -1,7 +1,10 @@
 {
-    "presets": ["env", "react", ["es2016"]],
-    "plugins": [
-        "babel-plugin-transform-class-properties",
-        "transform-es2015-arrow-functions"
-     ]
+  "presets": ["env", "react"],
+  "plugins": [
+    "babel-plugin-transform-class-properties",
+    "transform-es2015-arrow-functions",
+    ["transform-runtime", {
+      "regenerator": true
+    }]
+  ]
 }

@@ -7,7 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 class ToggleSeenBy extends Component {
 
-  toggleSeenBy = event => {
+  toggleSeenBy (event) {
     const toggleBy = event.currentTarget.value
 
     let currentSeenBy = this.state.seenBy

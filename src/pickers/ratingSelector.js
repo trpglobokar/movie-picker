@@ -3,23 +3,20 @@ import Slider from '@material-ui/lab/Slider';
 
 class RatingSelector extends Component {
 
+  //TODO: figure out how to make range; possible custom component? IDEK 
   render() {
-    console.log("this.props", this.props)
+    const { selectedRating, setRating } = this.props
     return (
       <div>
         <br />
-        Minimum Rating
+        Minimum Rating: {selectedRating}
         <Slider
-          defaultValue={1}
+          value={selectedRating}
           onChange={(_event, value) => {
-            this.props.setRating(value)
+            setRating(value)
             }
           }
-          //getAriaValueText={valuetext}
-          aria-labelledby="discrete-slider"
-          valueLabelDisplay="auto"
           step={0.5}
-          marks
           min={1}
           max={10}
         />
