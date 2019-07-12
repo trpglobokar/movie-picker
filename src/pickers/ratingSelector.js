@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-import Slider from '@material-ui/lab/Slider';
-import { Typography } from "@material-ui/core"
+import React, { Component } from "react"
+import { Slider, Typography } from "@material-ui/core"
 import styled from "styled-components"
 
 const RatingWrapper = styled.div`
@@ -8,21 +7,24 @@ const RatingWrapper = styled.div`
 `
 
 class RatingSelector extends Component {
-
-  //TODO: figure out how to make range; possible custom component? IDEK 
+  //TODO: figure out how to make range; possible custom component? IDEK
   render() {
     const { selectedRating, setRating } = this.props
     return (
       <RatingWrapper>
-        <Typography variant="h6">Minimum Rating: {selectedRating}/10</Typography>
+        <Typography variant="h6">
+          Minimum Rating: {selectedRating}/10
+        </Typography>
         <br />
         <Slider
-          value={selectedRating}
+          defaultValue={selectedRating}
+          aria-labelledby="discrete-slider"
+          valueLabelDisplay="auto"
           onChange={(_event, value) => {
             setRating(value)
-            }
-          }
+          }}
           step={0.5}
+          marks
           min={1}
           max={10}
         />
