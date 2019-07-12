@@ -1,25 +1,20 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Modal from '@material-ui/core/Modal';
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
 import Button from "@material-ui/core/Button"
 import Fab from '@material-ui/core/Fab'
 
-const BobsBurgers = styled.div`
+const RecommendedWrapper = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
 `
-
 const SuperFab = styled(Fab)`
   position: fixed;
   bottom: 16px;
   right: 16px;
 `
-
 const SuperButton = styled(Button)`
   margin: 8px;
 `
@@ -34,7 +29,7 @@ class App extends Component {
     }
   }
 
-  handleClick = event => {
+  handleClick = _event => {
     let movies = this.props.filteredMovies
 
     const newMovie =
@@ -46,7 +41,7 @@ class App extends Component {
     })
   }
 
-  handleClose = event => {
+  handleClose = _event => {
     this.setState({
       recommendedMovie: "",
       modalOpen: false
@@ -55,7 +50,7 @@ class App extends Component {
 
   render() {
     return (
-      <BobsBurgers>
+      <RecommendedWrapper>
         <SuperFab
           color="primary"
           variant="extended"
@@ -103,7 +98,7 @@ class App extends Component {
             </SuperButton>
           </div>
         </Dialog>
-      </BobsBurgers>
+      </RecommendedWrapper>
     )
   }
 }

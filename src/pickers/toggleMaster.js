@@ -5,7 +5,7 @@ import ToggleGenre from "./toggleGenre"
 import styled from "styled-components"
 
 const PickerWrapper = styled.div`
-  height: 100vh;
+  height: calc(100vh - 32px);
   overflow: scroll;
   background-color: white;
   box-shadow: 0px 0px 20px #00000057;
