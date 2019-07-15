@@ -23,8 +23,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
   - provide link to [themoviedb.org](themoviedb.org) for user to create their own new movie list
   -  provide direct link to [themoviedb.org](themoviedb.org)'s movie list page for user to edit existing movie
 - add additional filters
- - by range of release date
- - by text search of movie description; provides for additional subgenre filtering (i.e. zombie)
+  - by range of release date
+  - by text search of movie description; provides for additional subgenre filtering (i.e. zombie)
 - add multi-list comparisons
- - if have two "want to watch" lists, filter by shared items
+  - if have two "want to watch" lists, filter by shared items
 - display additional movie info
