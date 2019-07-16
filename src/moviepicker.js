@@ -1,8 +1,9 @@
 import React from "react"
-import { AppBar, CircularProgress, Grid, Toolbar, Typography } from "@material-ui/core"
+import { CircularProgress, Grid, Typography } from "@material-ui/core"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import styled from "styled-components"
 
+import TopBar from "./renders/topBar"
 import ToggleMaster from "./pickers/toggleMaster"
 import AllMovies from "./renders/allmovies"
 import RandomSelect from "./renders/randomSelect"
@@ -54,6 +55,8 @@ class MoviePicker extends React.Component {
   constructor(props) {
     super(props)
 
+    this.editListId = this.editListId.bind(this)
+
     this.state = {
       listId: "108073",
       listName: "",
@@ -69,9 +72,14 @@ class MoviePicker extends React.Component {
   }
 
   async componentDidMount() {
+    const { listId } = this.state
+    this._loadMovies(listId)
+  }
+
+  async _loadMovies(listId) {
     let totalMovies = []
     const baseURL =
-      `https://api.themoviedb.org/4/list/${this.state.listId}?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US`
+      `https://api.themoviedb.org/4/list/${listId}?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US`
     let flexURL = baseURL
     let resolved = false
     let listDescription = ""
@@ -97,10 +105,16 @@ class MoviePicker extends React.Component {
     this.setState({
       isLoaded: true,
       listDescription,
+      listId,
       listName,
       movies: totalMovies,
       filteredMovies: totalMovies
     })
+  }
+
+  async editListId(event) {
+    const listId = event.currentTarget.value
+    this._loadMovies(listId)
   }
 
   filterDaMovies(selectedGenres, selectedRating) {
@@ -127,13 +141,11 @@ class MoviePicker extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <AppContainer>
-          <AppBar position="static" color="secondary">
-            <Toolbar>
-              <Typography variant="h6" color="inherit">
-                {this.state.listName}
-              </Typography>
-            </Toolbar>
-          </AppBar>
+          <TopBar
+            editListId={this.editListId}
+            listId={this.state.listId}
+            listName={this.state.listName}
+          />
           <Grid container>
             <Grid item xs={4}>
               <ToggleMaster
