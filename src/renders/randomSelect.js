@@ -1,25 +1,39 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import Dialog from '@material-ui/core/Dialog'
-import DialogTitle from '@material-ui/core/DialogTitle'
-import Button from "@material-ui/core/Button"
-import Fab from '@material-ui/core/Fab'
+import { Button, Dialog, DialogTitle, Fab } from '@material-ui/core'
 
 const RecommendedWrapper = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
 `
+const RecommendedContent = styled.div`
+  min-width: 500px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 8px;
+  padding-bottom: 24px;
+`
 const SuperFab = styled(Fab)`
   position: fixed;
   bottom: 16px;
   right: 16px;
 `
+const ImageContainer = styled.div`
+  height: 300px;
+  width: 320px;
+  background-image: url(https://image.tmdb.org/t/p/w370_and_h556_bestv2${props => props.posterPath});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  margin-bottom: 15px;
+`
 const SuperButton = styled(Button)`
   margin: 8px;
 `
 
-class App extends Component {
+class RandomSelect extends Component {
   constructor(props) {
     super(props)
 
@@ -49,6 +63,8 @@ class App extends Component {
   }
 
   render() {
+    const { modalOpen, recommendedMovie } = this.state
+
     return (
       <RecommendedWrapper>
         <SuperFab
@@ -62,35 +78,13 @@ class App extends Component {
         <Dialog
           onClose={this.handleClose}
           aria-labelledby="simple-dialog-title"
-          open={this.state.modalOpen}
+          open={modalOpen}
         >
           <DialogTitle id="simple-dialog-title">
-            Recommended Movie: {this.state.recommendedMovie.title}
+            Recommended Movie: {recommendedMovie.title}
           </DialogTitle>
-          <div
-            style={{
-              minWidth: "500px",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              padding: "8px",
-              paddingBottom: "24px"
-            }}
-          >
-            <div
-              style={{
-                height: "300px",
-                width: "320px",
-                backgroundImage:
-                  "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" +
-                  this.state.recommendedMovie.poster_path +
-                  ")",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "contain",
-                marginBottom: "15px",
-              }}
-            />
+          <RecommendedContent>
+            <ImageContainer posterPath={recommendedMovie.poster_path} />
             <SuperButton
               variant="contained"
               color="primary"
@@ -98,11 +92,11 @@ class App extends Component {
             >
               Give me another
             </SuperButton>
-          </div>
+          </RecommendedContent>
         </Dialog>
       </RecommendedWrapper>
     )
   }
 }
 
-export default App
+export default RandomSelect
