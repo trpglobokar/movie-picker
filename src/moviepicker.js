@@ -55,6 +55,9 @@ class MoviePicker extends React.Component {
     super(props)
 
     this.state = {
+      listId: "108073",
+      listName: "",
+      listDescription: "",
       isLoaded: false,
       recommendedMovie: "",
       seenBy: ["Jake", "Rocky"],
@@ -68,14 +71,18 @@ class MoviePicker extends React.Component {
   async componentDidMount() {
     let totalMovies = []
     const baseURL =
-      "https://api.themoviedb.org/4/list/108073?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US"
+      `https://api.themoviedb.org/4/list/${this.state.listId}?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US`
     let flexURL = baseURL
     let resolved = false
+    let listDescription = ""
+    let listName = ""
 
     try {
       while (!resolved) {
         let response = await fetch(flexURL)
         let json = await response.json()
+        listDescription = json.description
+        listName = json.name
         totalMovies = totalMovies.concat(json.results)
         if (json.page < json.total_pages) {
           flexURL = `${baseURL}&page=${json.page + 1}`
@@ -89,6 +96,8 @@ class MoviePicker extends React.Component {
 
     this.setState({
       isLoaded: true,
+      listDescription,
+      listName,
       movies: totalMovies,
       filteredMovies: totalMovies
     })
@@ -121,7 +130,7 @@ class MoviePicker extends React.Component {
           <AppBar position="static" color="secondary">
             <Toolbar>
               <Typography variant="h6" color="inherit">
-                Movie List
+                {this.state.listName}
               </Typography>
             </Toolbar>
           </AppBar>
