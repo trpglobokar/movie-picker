@@ -32,6 +32,7 @@ class ToggleGenre extends Component {
               checked={this.props.selectedGenres.includes(peep.id.toString())}
               onChange={this.props.toggleGenre}
               value={peep.id.toString()}
+
             />
           }
           label={peep.name}

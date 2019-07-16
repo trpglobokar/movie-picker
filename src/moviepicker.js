@@ -45,8 +45,8 @@ const LoadingText = styled(Typography)`
   margin-right: 16px!important;
 `
 const MovieListWrapper = styled.div`
-  margin: 32px;
-  max-height: calc(100vh - 64px);
+  margin: 16px 32px 0 32px;
+  max-height: calc(100vh - 96px);
   overflow: scroll;
 `
 
