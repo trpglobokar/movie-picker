@@ -73,12 +73,13 @@ class App extends Component {
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              padding: "8px"
+              padding: "8px",
+              paddingBottom: "24px"
             }}
           >
             <div
               style={{
-                height: "400px",
+                height: "300px",
                 width: "320px",
                 backgroundImage:
                   "url(https://image.tmdb.org/t/p/w370_and_h556_bestv2" +
@@ -86,7 +87,8 @@ class App extends Component {
                   ")",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
-                backgroundSize: "contain"
+                backgroundSize: "contain",
+                marginBottom: "15px",
               }}
             />
             <SuperButton
