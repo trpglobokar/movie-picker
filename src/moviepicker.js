@@ -1,5 +1,5 @@
 import React from "react"
-import { CircularProgress, Grid, Typography } from "@material-ui/core"
+import { AppBar, CircularProgress, Grid, Toolbar, Typography } from "@material-ui/core"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import styled from "styled-components"
 
@@ -11,11 +11,12 @@ import "./static/fonts.css"
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#3B7080" }, // Purple and green play nicely together.
-    secondary: { main: "#ADE25D" } // This is just green.A700 as hex.
+    primary: { main: "#23B5D3", contrastText: "#FBFBFB" }, // Purple and green play nicely together.
+    secondary: { main: "#071013", contrastText: "#FBFBFB" } // This is just green.A700 as hex.
   },
   typography: {
     fontFamily: [
+      "Khand",
       "Raleway",
       "typeface-roboto",
       "Roboto",
@@ -44,8 +45,8 @@ const LoadingText = styled(Typography)`
   margin-right: 16px!important;
 `
 const MovieListWrapper = styled.div`
-  margin: 32px;
-  max-height: calc(100vh - 64px);
+  margin: 16px 32px 0 32px;
+  max-height: calc(100vh - 96px);
   overflow: scroll;
 `
 
@@ -117,6 +118,13 @@ class MoviePicker extends React.Component {
     return (
       <MuiThemeProvider theme={theme}>
         <AppContainer>
+          <AppBar position="static" color="secondary">
+            <Toolbar>
+              <Typography variant="h6" color="inherit">
+                Movie List
+              </Typography>
+            </Toolbar>
+          </AppBar>
           <Grid container>
             <Grid item xs={4}>
               <ToggleMaster
@@ -137,7 +145,6 @@ class MoviePicker extends React.Component {
             </Grid>
             <Grid item xs={8}>
               <MovieListWrapper>
-                <Typography variant="h4">Movie List</Typography>
                 <AllMovies movies={this.state.filteredMovies} />
               </MovieListWrapper>
             </Grid>
