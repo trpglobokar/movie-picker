@@ -22,8 +22,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 - add additional filters
   - by range of release date
   - by text search of movie description; provides for additional subgenre filtering (i.e. zombie)
+  - possible link with metacritic scores?
 - add multi-list comparisons
   - if have two "want to watch" lists, filter by shared items
 - display additional movie info
   - expandable info in general movie list
-  - more information in the "Choose for Me" modal

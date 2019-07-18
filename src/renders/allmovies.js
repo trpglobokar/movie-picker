@@ -30,7 +30,7 @@ class AllMovies extends Component {
               <ListItemAvatar>
                 <Avatar
                   src={
-                    "https://image.tmdb.org/t/p/w370_and_h556_bestv2" +
+                    "https://image.tmdb.org/t/p/w92/" +
                     movie.backdrop_path
                   }
                 />
