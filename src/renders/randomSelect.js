@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { Button, Dialog, DialogTitle, Fab } from '@material-ui/core'
+import { Button, Dialog, DialogTitle, Fab } from "@material-ui/core"
 
 const RecommendedWrapper = styled.div`
   position: absolute;
@@ -39,7 +39,7 @@ class RandomSelect extends Component {
 
     this.state = {
       recommendedMovie: "",
-      modalOpen: false
+      modalOpen: false,
     }
   }
 
@@ -51,14 +51,14 @@ class RandomSelect extends Component {
 
     this.setState({
       recommendedMovie: newMovie,
-      modalOpen: true
+      modalOpen: true,
     })
   }
 
   handleClose = _event => {
     this.setState({
       recommendedMovie: "",
-      modalOpen: false
+      modalOpen: false,
     })
   }
 

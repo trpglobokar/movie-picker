@@ -10,10 +10,12 @@ import RandomSelect from "./renders/randomSelect"
 
 import "./static/fonts.css"
 
+const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#23B5D3", contrastText: "#FBFBFB" }, // Purple and green play nicely together.
-    secondary: { main: "#071013", contrastText: "#FBFBFB" } // This is just green.A700 as hex.
+    secondary: { main: "#071013", contrastText: "#FBFBFB" }, // This is just green.A700 as hex.
   },
   typography: {
     fontFamily: [
@@ -26,10 +28,10 @@ const theme = createMuiTheme({
       "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"'
+      '"Segoe UI Symbol"',
     ].join(","),
-    useNextVariants: true
-  }
+    useNextVariants: true,
+  },
 })
 
 const AppContainer = styled.div`
@@ -43,7 +45,7 @@ const CenterFlex = styled.div`
   justify-content: center;
 `
 const LoadingText = styled(Typography)`
-  margin-right: 16px!important;
+  margin-right: 16px !important;
 `
 const MovieListWrapper = styled.div`
   margin: 16px 32px 0 32px;
@@ -67,7 +69,7 @@ class MoviePicker extends React.Component {
       selectedGenres: [],
       selectedRating: 1,
       movies: [],
-      filteredMovies: []
+      filteredMovies: [],
     }
   }
 
@@ -78,8 +80,7 @@ class MoviePicker extends React.Component {
 
   async _loadMovies(listId) {
     let totalMovies = []
-    const baseURL =
-      `https://api.themoviedb.org/4/list/${listId}?api_key=43a2c46891bb2b3bb8fccd7b04ce1f02&language=en-US`
+    const baseURL = `https://api.themoviedb.org/4/list/${listId}?api_key=${TMDB_API_KEY}&language=en-US`
     let flexURL = baseURL
     let resolved = false
     let listDescription = ""
@@ -98,8 +99,8 @@ class MoviePicker extends React.Component {
           resolved = true
         }
       }
-    } catch(err) {
-      alert(err); // TypeError: failed to fetch
+    } catch (err) {
+      alert(err) // TypeError: failed to fetch
     }
 
     this.setState({
@@ -108,7 +109,7 @@ class MoviePicker extends React.Component {
       listId,
       listName,
       movies: totalMovies,
-      filteredMovies: totalMovies
+      filteredMovies: totalMovies,
     })
   }
 
@@ -159,7 +160,7 @@ class MoviePicker extends React.Component {
                   this.setState({
                     selectedGenres,
                     selectedRating,
-                    filteredMovies
+                    filteredMovies,
                   })
                 }}
               />
