@@ -1,83 +1,99 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { AppBar, Button, Dialog, DialogTitle, FormControlLabel, IconButton, MenuIcon, Radio, RadioGroup, Toolbar, Typography } from "@material-ui/core"
-import Edit from '@material-ui/icons/Edit'
+import {
+  AppBar,
+  Dialog,
+  DialogTitle,
+  FormControlLabel,
+  IconButton,
+  Radio,
+  Toolbar,
+  Typography,
+} from "@material-ui/core"
+import Edit from "@material-ui/icons/Edit"
 
-const RecommendedWrapper = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
+const defaultLists = [
+  {
+    id: "108073",
+    name: "Rocky's Recommended Movies",
+  },
+  {
+    id: "108351",
+    name: "Rocky's To Watch List",
+  },
+]
+
+const AppTitle = styled(Typography)`
+  flex-grow: 1;
 `
 const DialogContent = styled.div`
   min-width: 500px;
   display: flex;
-  align-items: center;
   flex-direction: column;
-  padding: 8px;
-  padding-bottom: 24px;
-`
-const ImageContainer = styled.div`
-  height: 300px;
-  width: 320px;
-  background-image: url(https://image.tmdb.org/t/p/w370_and_h556_bestv2${props => props.posterPath});
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  margin-bottom: 15px;
-`
-const SuperButton = styled(Button)`
-  margin: 8px;
+  padding: 0 24px 24px 24px;
 `
 
-class RandomSelect extends Component {
+class TopBar extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      modalOpen: false
+      modalOpen: false,
+      defaultLists: defaultLists,
     }
+  }
+
+  async componentDidMount() {
+    //TODO: pull default lists from accountId
+    /*const accountId = "trpglobokar"
+    const baseURL = `https://api.themoviedb.org/4/account/${accountId}/lists?api_key=${API_KEY}`
+    let response = await fetch(baseURL)
+    let json = await response.json()
+    console.log("json", json)*/
   }
 
   handleClick = _event => {
     this.setState({
-      modalOpen: true
+      modalOpen: true,
     })
   }
 
   handleClose = _event => {
     this.setState({
-      modalOpen: false
+      modalOpen: false,
     })
   }
 
-  renderSampleLists(){
+  renderSampleLists() {
     const { editListId, listId } = this.props
-    const hardCodedListIds = ["108073","108351"]
-    return hardCodedListIds.map(hcId => {
+    const { defaultLists } = this.state
+
+    return defaultLists.map(list => {
       return (
         <FormControlLabel
-          key={hcId}
+          key={list.id}
           control={
             <Radio
-              checked={listId === hcId}
+              checked={listId === list.id}
               onChange={editListId}
-              value={hcId}
-
+              value={list.id}
             />
           }
-          label={hcId}
+          label={list.name}
         />
       )
     })
-
   }
 
   render() {
-    const { modalOpen, recommendedMovie } = this.state
+    const { modalOpen } = this.state
 
     return (
       <AppBar position="static" color="secondary">
         <Toolbar>
+          <AppTitle variant="h6" color="inherit">
+            Movie Picker
+          </AppTitle>
           <Typography variant="h6" color="inherit">
             {this.props.listName}
           </Typography>
@@ -96,16 +112,12 @@ class RandomSelect extends Component {
           aria-labelledby="simple-dialog-title"
           open={modalOpen}
         >
-          <DialogTitle id="simple-dialog-title">
-            Edit Stuff
-          </DialogTitle>
-          <DialogContent>
-            {this.renderSampleLists()}
-          </DialogContent>
+          <DialogTitle id="simple-dialog-title">Change Movie List</DialogTitle>
+          <DialogContent>{this.renderSampleLists()}</DialogContent>
         </Dialog>
       </AppBar>
     )
   }
 }
 
-export default RandomSelect
+export default TopBar
