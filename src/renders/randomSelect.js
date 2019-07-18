@@ -1,33 +1,46 @@
 import React, { Component } from "react"
 import styled from "styled-components"
-import { Button, Dialog, DialogTitle, Fab } from "@material-ui/core"
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  Fab,
+  Link,
+  Typography,
+} from "@material-ui/core"
+import movieGenres from "../static/movieGenres.json"
 
 const RecommendedWrapper = styled.div`
   position: absolute;
   bottom: 0;
   right: 0;
 `
-const RecommendedContent = styled.div`
-  min-width: 500px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  padding: 8px;
-  padding-bottom: 24px;
-`
 const SuperFab = styled(Fab)`
   position: fixed;
   bottom: 16px;
   right: 16px;
 `
+const DialogContent = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 24px 24px 24px;
+`
+const RecommendedMovie = styled.div`
+  display: flex;
+  margin-bottom: 8px;
+`
 const ImageContainer = styled.div`
   height: 300px;
-  width: 320px;
+  width: 220px;
   background-image: url(https://image.tmdb.org/t/p/w370_and_h556_bestv2${props => props.posterPath});
-  background-position: center;
+  background-position: top;
   background-repeat: no-repeat;
   background-size: contain;
-  margin-bottom: 15px;
+  margin-right: 16px;
+`
+const RecommendedInfo = styled.div`
+  width: 75%;
 `
 const SuperButton = styled(Button)`
   margin: 8px;
@@ -38,7 +51,10 @@ class RandomSelect extends Component {
     super(props)
 
     this.state = {
-      recommendedMovie: "",
+      recommendedMovie: {
+        id: "",
+        genre_ids: [],
+      },
       modalOpen: false,
     }
   }
@@ -57,13 +73,21 @@ class RandomSelect extends Component {
 
   handleClose = _event => {
     this.setState({
-      recommendedMovie: "",
+      recommendedMovie: {
+        id: "",
+        genre_ids: [],
+      },
       modalOpen: false,
     })
   }
 
   render() {
     const { modalOpen, recommendedMovie } = this.state
+    const tmdbURL = `https://www.themoviedb.org/movie/${recommendedMovie.id}`
+    const genreNames = recommendedMovie.genre_ids
+      .map(id => movieGenres.genres.find(genre => genre.id === id).name)
+      .join(", ")
+    console.log("recommendedMovie", recommendedMovie)
 
     return (
       <RecommendedWrapper>
@@ -81,10 +105,26 @@ class RandomSelect extends Component {
           open={modalOpen}
         >
           <DialogTitle id="simple-dialog-title">
-            Recommended Movie: {recommendedMovie.title}
+            Recommended Movie:{" "}
+            <Link href={tmdbURL} rel="noopener noreferrer" target="_blank">
+              {recommendedMovie.title}
+            </Link>
           </DialogTitle>
-          <RecommendedContent>
-            <ImageContainer posterPath={recommendedMovie.poster_path} />
+          <DialogContent>
+            <RecommendedMovie>
+              <ImageContainer posterPath={recommendedMovie.poster_path} />
+              <RecommendedInfo>
+                <Typography>
+                  <b>Release Date:</b> {recommendedMovie.release_date}
+                </Typography>
+                <Typography>
+                  <b>Genres:</b> {genreNames}
+                </Typography>
+                <Typography>
+                  <b>Description:</b> {recommendedMovie.overview}
+                </Typography>
+              </RecommendedInfo>
+            </RecommendedMovie>
             <SuperButton
               variant="contained"
               color="primary"
@@ -92,7 +132,7 @@ class RandomSelect extends Component {
             >
               Give me another
             </SuperButton>
-          </RecommendedContent>
+          </DialogContent>
         </Dialog>
       </RecommendedWrapper>
     )
