@@ -15,10 +15,7 @@ Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ## To Do's:
-- list id for user-selected movie lists is currently hardcoded
-  - display title of specific selected movie instead of "Movie List"
-  - provide Edit button
-  - provide sample list of other selectable movie lists
+- give users more control over available movie lists
   - provide text box for user to c/p their own movie list in
   - provide link to [themoviedb.org](themoviedb.org) for user to create their own new movie list
   -  provide direct link to [themoviedb.org](themoviedb.org)'s movie list page for user to edit existing movie
@@ -28,3 +25,5 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 - add multi-list comparisons
   - if have two "want to watch" lists, filter by shared items
 - display additional movie info
+  - expandable info in general movie list
+  - more information in the "Choose for Me" modal
