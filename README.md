@@ -8,8 +8,9 @@ Queries [themoviedb.org](themoviedb.org) for a list of user-selected movies, the
 
 1. Clone repo
 2. Run `npm install`
-3. Run `npm start`
-4. App should open automatically at [http://localhost:3000](http://localhost:3000)
+3. Create a user account at [themoviedb.org](themoviedb.org), generate a [free API Key](https://www.themoviedb.org/settings/api), and add it to an .env file under the variable name `REACT_APP_TMDB_API_KEY`
+4. Run `npm start`
+5. App should open automatically at [http://localhost:3000](http://localhost:3000)
 
 Runs the app in the development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

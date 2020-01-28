@@ -1,5 +1,9 @@
 import React from "react"
-import { CircularProgress, Grid, Typography } from "@material-ui/core"
+import {
+  CircularProgress,
+  Grid,
+  Typography,
+} from "@material-ui/core"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import styled from "styled-components"
 
@@ -7,6 +11,7 @@ import TopBar from "./renders/topBar"
 import ToggleMaster from "./pickers/toggleMaster"
 import AllMovies from "./renders/allmovies"
 import RandomSelect from "./renders/randomSelect"
+import WelcomeDialog from "./renders/welcomeDialog"
 
 import "./static/fonts.css"
 
@@ -172,6 +177,7 @@ class MoviePicker extends React.Component {
             </Grid>
           </Grid>
           <RandomSelect filteredMovies={this.state.filteredMovies} />
+          <WelcomeDialog />
         </AppContainer>
       </MuiThemeProvider>
     )
