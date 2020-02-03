@@ -12,41 +12,6 @@ import {
 } from "@material-ui/core"
 import Edit from "@material-ui/icons/Edit"
 
-const defaultLists = [
-  {
-    id: "43",
-    name: "AFI's 100 Most Thrilling American Films",
-  },
-  {
-    id: "338",
-    name: "Disney Classic Collection",
-  },
-  {
-    id: "932",
-    name: "Girls With Guns",
-  },
-  {
-    id: "2469",
-    name: "Best Picture Winners - The Golden Globes",
-  },
-  {
-    id: "3321",
-    name: "Anime Movies",
-  },
-  {
-    id: "3945",
-    name: "Good Science Fiction Flicks",
-  },
-  {
-    id: "108073",
-    name: "Rocky's Recommended Movies",
-  },
-  {
-    id: "108351",
-    name: "Rocky's To Watch List",
-  },
-]
-
 const AppTitle = styled(Typography)`
   flex-grow: 1;
 `

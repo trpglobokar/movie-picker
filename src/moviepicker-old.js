@@ -7,11 +7,11 @@ import {
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import styled from "styled-components"
 
-import TopBar from "./renders/topBar"
+import TopBar from "./renders/topBar-old"
 import ToggleMaster from "./pickers/toggleMaster"
-import AllMovies from "./renders/allmovies"
-import RandomSelect from "./renders/randomSelect"
-import WelcomeDialog from "./renders/welcomeDialog"
+import AllMovies from "./renders/allmovies-old"
+import RandomSelect from "./renders/randomSelect-old"
+import WelcomeDialog from "./renders/welcomeDialog-old"
 
 import "./static/fonts.css"
 

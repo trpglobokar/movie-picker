@@ -1,11 +1,18 @@
 import * as React from "react";
 import {
   CircularProgress,
-  //Grid,
+  Grid,
   Typography,
 } from "@material-ui/core"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import styled from "styled-components"
+
+import TopBar from "./renders/TopBar"
+import WelcomeDialog from "./renders/WelcomeDialog"
+import AllMovies from "./renders/AllMovies"
+import RandomSelect from "./renders/RandomSelect"
+
+const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
 const CenterFlex = styled.div`
   height: 100%;
@@ -16,6 +23,14 @@ const CenterFlex = styled.div`
 `
 const LoadingText = styled(Typography)`
   margin-right: 16px !important;
+`
+const AppContainer = styled.div`
+  height: 100%;
+`
+const MovieListWrapper = styled.div`
+  margin: 16px 32px 0 32px;
+  max-height: calc(100vh - 96px);
+  overflow: scroll;
 `
 
 
@@ -67,7 +82,7 @@ export class MoviePicker extends React.Component<MPProps, MPState> {
       listId: "108073",
       listName: "",
       listDescription: "",
-      isLoaded: false,
+      isLoaded: true,
       recommendedMovie: "",
       seenBy: ["Jake", "Rocky"],
       selectedGenres: [],
@@ -77,10 +92,56 @@ export class MoviePicker extends React.Component<MPProps, MPState> {
     };
   }
 
+  async componentDidMount() {
+    const { listId } = this.state
+    this._loadMovies(listId)
+  }
+
+  //TODO: move this to a utils file
+  async _loadMovies(listId: string) {
+    let totalMovies: any[] = []
+    const baseURL: string = `https://api.themoviedb.org/4/list/${listId}?api_key=${TMDB_API_KEY}&language=en-US`
+    let flexURL: string = baseURL
+    let resolved: boolean = false
+    let listDescription: string = ""
+    let listName: string = ""
+
+    try {
+      while (!resolved) {
+        let response = await fetch(flexURL)
+        let json = await response.json()
+        listDescription = json.description
+        listName = json.name
+        totalMovies = totalMovies.concat(json.results)
+        if (json.page < json.total_pages) {
+          flexURL = `${baseURL}&page=${json.page + 1}`
+        } else {
+          resolved = true
+        }
+      }
+    } catch (err) {
+      alert(err) // TypeError: failed to fetch
+    }
+
+    this.setState({
+      isLoaded: true,
+      listDescription,
+      listId,
+      listName,
+      movies: totalMovies,
+      filteredMovies: totalMovies,
+    })
+  }
+
+  editListId = (listId: string) => {
+    //this.setState({ listId })
+    this._loadMovies(listId)
+  }
+
 
   render() {
     if (!this.state.isLoaded) {
-      return (
+      return ( //TODO: break this into its own component
         <MuiThemeProvider theme={theme}>
           <CenterFlex>
             <LoadingText>Loading...</LoadingText>
@@ -89,5 +150,28 @@ export class MoviePicker extends React.Component<MPProps, MPState> {
         </MuiThemeProvider>
       )
     }
+    return (
+      <MuiThemeProvider theme={theme}>
+        <AppContainer>
+          <TopBar
+            editListId={this.editListId}
+            listId={this.state.listId}
+            listName={this.state.listName}
+          />
+          <Grid container>
+            <Grid item xs={4}>
+            </Grid>
+            <Grid item xs={8}>
+              <MovieListWrapper>
+                <AllMovies movies={this.state.filteredMovies} />
+              </MovieListWrapper>
+            </Grid>
+          </Grid>
+          <RandomSelect filteredMovies={this.state.filteredMovies} />
+          <WelcomeDialog />
+        </AppContainer>
+      </MuiThemeProvider>
+    )
   }
+
 }
