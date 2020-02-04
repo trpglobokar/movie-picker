@@ -5,7 +5,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { Typography } from '@material-ui/core'
 
-import movieGenres from '../static/movieGenres.json';
+import movieGenresJson from '../static/movieGenres.json';
 
 import styled from "styled-components"
 
@@ -19,23 +19,33 @@ const SuperFormControlLabel = styled(FormControlLabel)`
   min-width: 160px;
 `
 
-class ToggleGenre extends Component {
+interface TGProps {
+  selectedGenres: string[];
+  toggleGenre: (genreId: string) => void;
+}
 
-  renderFormGroup(){
-    const peepsInvolved = movieGenres.genres
-    const jones = peepsInvolved.map(peep => {
+const movieGenres:any = movieGenresJson
+
+class ToggleGenre extends Component<TGProps> {
+  constructor(props: TGProps) {
+    super(props);
+  }
+
+  renderFormGroup() {
+    //TODONEXT: adapt this from obj to array
+    const jones = Object.keys(movieGenres).map((id: string) => {
       return (
         <SuperFormControlLabel
-          key={peep.id}
+          key={id}
           control={
             <Checkbox
-              checked={this.props.selectedGenres.includes(peep.id.toString())}
-              onChange={this.props.toggleGenre}
-              value={peep.id.toString()}
+              checked={this.props.selectedGenres.includes(id)}
+              onChange={() => { this.props.toggleGenre(id) }}
+              value={id}
 
             />
           }
-          label={peep.name}
+          label={movieGenres[id]}
         />
       )
     })
@@ -48,13 +58,12 @@ class ToggleGenre extends Component {
   }
 
   render() {
-    console.log("this.props", this.props)
     return (
       <div>
-        <SuperFormControl component="fieldset">
+        <FormControl component="fieldset">
           <Typography variant="h6">Genres</Typography>
           {this.renderFormGroup()}
-        </SuperFormControl>
+        </FormControl>
       </div>
     )
   }

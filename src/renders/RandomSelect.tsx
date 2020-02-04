@@ -114,7 +114,7 @@ class RandomSelect extends Component<RSProps, RSState> {
     const { modalOpen, recommendedMovie } = this.state
     const tmdbURL = `https://www.themoviedb.org/movie/${recommendedMovie.id}`
     const genreNames = recommendedMovie.genre_ids
-      .map(id => movieGenres[id].name)
+      .map(id => movieGenres[id])
       .join(", ")
     console.log("recommendedMovie", recommendedMovie)
 

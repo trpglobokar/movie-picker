@@ -11,6 +11,7 @@ import TopBar from "./renders/TopBar"
 import WelcomeDialog from "./renders/WelcomeDialog"
 import AllMovies from "./renders/AllMovies"
 import RandomSelect from "./renders/RandomSelect"
+import ToggleMaster from "./pickers/ToggleMaster"
 
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
@@ -129,7 +130,7 @@ export class MoviePicker extends React.Component<MPProps, MPState> {
       listId,
       listName,
       movies: totalMovies,
-      filteredMovies: totalMovies,
+      filteredMovies: totalMovies, //TODO: filter this as well
     })
   }
 
@@ -138,6 +139,14 @@ export class MoviePicker extends React.Component<MPProps, MPState> {
     this._loadMovies(listId)
   }
 
+  filterDaMovies(selectedGenres: any[], selectedRating: number) {
+    const movies = this.state.movies
+      .filter(movie => movie.vote_average > selectedRating)
+      .filter(movie =>
+        selectedGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
+      )
+    return movies
+  }
 
   render() {
     if (!this.state.isLoaded) {
@@ -160,6 +169,21 @@ export class MoviePicker extends React.Component<MPProps, MPState> {
           />
           <Grid container>
             <Grid item xs={4}>
+              <ToggleMaster
+                selectedRating={this.state.selectedRating}
+                selectedGenres={this.state.selectedGenres}
+                updateSelections={(selectedGenres:any[], selectedRating:number) => {
+                  const filteredMovies = this.filterDaMovies(
+                    selectedGenres,
+                    selectedRating
+                  )
+                  this.setState({
+                    selectedGenres,
+                    selectedRating,
+                    filteredMovies,
+                  })
+                }}
+              />
             </Grid>
             <Grid item xs={8}>
               <MovieListWrapper>

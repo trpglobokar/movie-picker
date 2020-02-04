@@ -6,7 +6,12 @@ const RatingWrapper = styled.div`
   margin-bottom: 32px;
 `
 
-class RatingSelector extends Component {
+interface RSProps {
+  selectedRating: number;
+  setRating: (rating: number) => void;
+}
+
+class RatingSelector extends Component<RSProps> {
   //TODO: figure out how to make range; possible custom component? IDEK
   render() {
     const { selectedRating, setRating } = this.props
@@ -21,7 +26,11 @@ class RatingSelector extends Component {
           aria-labelledby="discrete-slider"
           valueLabelDisplay="auto"
           onChange={(_event, value) => {
-            setRating(value)
+            if (Array.isArray(value)) {
+              setRating(value[0])
+            } else {
+              setRating(value)
+            }
           }}
           step={0.5}
           marks

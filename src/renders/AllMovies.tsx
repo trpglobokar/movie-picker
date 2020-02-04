@@ -40,6 +40,8 @@ class AllMovies extends Component<AllMoviesProps, AllMoviesState> {
         {this.props.movies.map(movie => {
           const genreIDs = movie.genre_ids
           const genreNames = genreIDs.map(id => movieGenres[id])
+          console.log("genreIDs", genreIDs)
+          console.log("genreNames", genreNames)
 
           return (
             <ListItem key={movie.id} alignItems="flex-start">

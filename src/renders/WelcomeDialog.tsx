@@ -19,14 +19,12 @@ interface WelcomeState {
   modalOpen: boolean;
 }
 
-
-
 class WelcomeDialog extends Component<WelcomeProps, WelcomeState> {
   constructor(props: WelcomeProps) {
     super(props)
 
     this.state = {
-      modalOpen: true,
+      modalOpen: false, //modalOpen: true,
     }
   }
 
