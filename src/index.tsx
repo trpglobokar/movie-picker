@@ -1,11 +1,7 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-//import "./static/index.css"
-//import MoviePicker from "./moviepicker"
+import "./static/index.css"
 //import * as serviceWorker from "./serviceWorker"
-
-//ReactDOM.render(<MoviePicker />, document.getElementById("root"))
-
 
 import { MoviePicker } from "./MoviePicker";
 

@@ -13,6 +13,8 @@ import AllMovies from "./renders/AllMovies"
 import RandomSelect from "./renders/RandomSelect"
 import ToggleMaster from "./pickers/ToggleMaster"
 
+import "./static/fonts.css"
+
 const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
 const CenterFlex = styled.div`
@@ -34,10 +36,6 @@ const MovieListWrapper = styled.div`
   overflow: scroll;
 `
 
-
-interface MPProps {
-}
-
 interface MPState {
   playOrPause?: string;
   listId: string;
@@ -54,8 +52,8 @@ interface MPState {
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#23B5D3", contrastText: "#FBFBFB" }, // Purple and green play nicely together.
-    secondary: { main: "#071013", contrastText: "#FBFBFB" }, // This is just green.A700 as hex.
+    primary: { main: "#23B5D3", contrastText: "#FBFBFB" },
+    secondary: { main: "#071013", contrastText: "#FBFBFB" },
   },
   typography: {
     fontFamily: [
@@ -75,8 +73,8 @@ const theme = createMuiTheme({
 
 // 'HelloProps' describes the shape of props.
 // State is never set so we use the '{}' type.
-export class MoviePicker extends React.Component<MPProps, MPState> {
-  constructor(props: MPProps) {
+export class MoviePicker extends React.Component<{}, MPState> {
+  constructor(props:{}) {
     super(props);
     
     this.state = {
