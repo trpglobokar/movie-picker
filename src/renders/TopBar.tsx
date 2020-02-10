@@ -2,11 +2,13 @@ import * as React from "react"
 import styled from "styled-components"
 import {
   AppBar,
+  Button,
   Dialog,
   DialogTitle,
   FormControlLabel,
   IconButton,
   Radio,
+  TextField,
   Toolbar,
   Typography,
 } from "@material-ui/core"
@@ -22,6 +24,9 @@ const DialogContent = styled.div`
   flex-direction: column;
   padding: 0 24px 24px 24px;
 `
+const SuperButton = styled(Button)`
+  margin: 8px !important;
+` //TODO: make these re-usable + use MaterialUI's API to edit
 
 interface TopBarProps {
   editListId: (listId: string) => void;
@@ -32,6 +37,8 @@ interface TopBarProps {
 interface TopBarState {
   modalOpen: boolean;
   defaultLists: any; //TODO: make this specific
+  tempListId: string;
+  customList: boolean;
 }
 
 
@@ -42,6 +49,8 @@ class TopBar extends React.Component<TopBarProps, TopBarState> {
     this.state = {
       modalOpen: false,
       defaultLists: defaultLists.lists,
+      tempListId: this.props.listId,
+      customList: false,
     }
   }
 
@@ -66,9 +75,14 @@ class TopBar extends React.Component<TopBarProps, TopBarState> {
     })
   }
 
+  handleListChange = () => {
+    this.props.editListId(this.state.tempListId)
+    this.handleClose();
+  }
+
   renderSampleLists() {
-    const { editListId, listId } = this.props
-    const { defaultLists } = this.state
+    //const { editListId, listId } = this.props
+    const { tempListId, defaultLists } = this.state
 
     return defaultLists.map((list:any) => {
       return (
@@ -76,8 +90,11 @@ class TopBar extends React.Component<TopBarProps, TopBarState> {
           key={list.id}
           control={
             <Radio
-              checked={listId === list.id}
-              onChange={() => editListId(list.id)}
+              checked={tempListId === list.id}
+              onChange={() => this.setState({
+                customList: false,
+                tempListId: list.id
+              })}
               value={list.id}
             />
           }
@@ -88,7 +105,7 @@ class TopBar extends React.Component<TopBarProps, TopBarState> {
   }
 
   render() {
-    const { modalOpen } = this.state
+    const { customList, modalOpen, tempListId } = this.state
 
     return (
       <AppBar position="static" color="secondary">
@@ -115,7 +132,39 @@ class TopBar extends React.Component<TopBarProps, TopBarState> {
           open={modalOpen}
         >
           <DialogTitle id="simple-dialog-title">Change Movie List</DialogTitle>
-          <DialogContent>{this.renderSampleLists()}</DialogContent>
+          <DialogContent>
+            {this.renderSampleLists()}
+            <FormControlLabel
+              key="customList"
+              control={
+                <Radio
+                  checked={customList === true}
+                  onChange={() => this.setState({
+                    customList: true,
+                    tempListId: ""
+                  })}
+                  value={""}
+                />
+              }
+              label="Custom List"
+            />
+            {customList && (
+              <TextField
+                id="outlined-basic"
+                label="Custom List Id"
+                variant="outlined"
+                onChange={(e) => this.setState({
+                  tempListId: e.target.value
+                })}
+              />
+            )}
+            <SuperButton
+              variant="contained"
+              color="primary"
+              onClick={this.handleListChange}>
+                Change
+            </SuperButton>
+          </DialogContent>
         </Dialog>
       </AppBar>
     )

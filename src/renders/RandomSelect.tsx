@@ -49,8 +49,8 @@ const RecommendedInfo = styled.div`
   width: 75%;
 `
 const SuperButton = styled(Button)`
-  margin: 8px;
-`
+  margin: 8px !important;
+` //TODO: make these re-usable + use MaterialUI's API to edit
 
 interface RSProps {
   filteredMovies: any[];
