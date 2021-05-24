@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { FunctionComponent } from "react"
 import {
   Avatar,
   List,
@@ -23,46 +23,35 @@ interface AllMoviesProps {
     genre_ids: string[]
   }[]; //TODO: make movies its own interface in a utils file
 }
-interface AllMoviesState {
-}
 
-const movieGenres:any = movieGenresJson
+const movieGenres:any = movieGenresJson;
 
+const AllMovies:FunctionComponent<AllMoviesProps> = (props) => {
+  return (
+    <ListCaptain>
+      {props.movies.map(movie => {
+        const genreIDs = movie.genre_ids
+        const genreNames = genreIDs.map(id => movieGenres[id])
 
-class AllMovies extends Component<AllMoviesProps, AllMoviesState> {
-  constructor(props: AllMoviesProps) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <ListCaptain>
-        {this.props.movies.map(movie => {
-          const genreIDs = movie.genre_ids
-          const genreNames = genreIDs.map(id => movieGenres[id])
-          console.log("genreIDs", genreIDs)
-          console.log("genreNames", genreNames)
-
-          return (
-            <ListItem key={movie.id} alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar
-                  src={
-                    "https://image.tmdb.org/t/p/w92/" +
-                    movie.backdrop_path
-                  }
-                />
-              </ListItemAvatar>
-              <ListItemText
-                primary={movie.title}
-                secondary={genreNames.join(", ")}
+        return (
+          <ListItem key={movie.id} alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar
+                src={
+                  "https://image.tmdb.org/t/p/w92/" +
+                  movie.backdrop_path
+                }
               />
-            </ListItem>
-          )
-        })}
-      </ListCaptain>
-    )
-  }
+            </ListItemAvatar>
+            <ListItemText
+              primary={movie.title}
+              secondary={genreNames.join(", ")}
+            />
+          </ListItem>
+        )
+      })}
+    </ListCaptain>
+  )
 }
 
-export default AllMovies
+export default AllMovies;
