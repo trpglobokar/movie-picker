@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { FunctionComponent, useState } from "react"
 import styled from "styled-components"
 import {
   Button,
@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core"
 import movieGenresJson from "../static/movieGenres.json"
 
-const movieGenres:any = movieGenresJson
+const movieGenres:any = movieGenresJson;
 
 interface ICProps {
   posterPath: string;
@@ -56,116 +56,82 @@ interface RSProps {
   filteredMovies: any[];
 }
 
-interface RSState {
-  recommendedMovie: { //TODO: make of type Movie
-    id: string,
-    title: string,
-    backdrop_path: string,
-    poster_path: string,
-    release_date?: string,
-    overview?: string,
-    genre_ids: string[]
+const RandomSelect:FunctionComponent<RSProps> = ({ filteredMovies }) => {
+  const randomMovie =
+    filteredMovies[Math.floor(Math.random() * Math.floor(filteredMovies.length))];
+
+  const [recommendedMovie, setRecommendedMovie] = useState(randomMovie);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleChooseClick = () => {
+    const randomMovie =
+      filteredMovies[Math.floor(Math.random() * Math.floor(filteredMovies.length))];
+    
+    setIsModalOpen(true);
+    setRecommendedMovie(randomMovie);
   };
-  modalOpen: boolean;
-}
 
-class RandomSelect extends Component<RSProps, RSState> {
-  constructor(props: RSProps) {
-    super(props)
+  //TODO: break into separate component
+  const renderDialog = () => {
+    if (!recommendedMovie) { return null };
 
-    this.state = {
-      recommendedMovie: {
-        id: "",
-        title: "",
-        poster_path: "",
-        backdrop_path: "",
-        genre_ids: [],
-      },
-      modalOpen: false,
-    }
-  }
-
-  handleClick = () => {
-    let movies = this.props.filteredMovies
-
-    const newMovie =
-      movies[Math.floor(Math.random() * Math.floor(movies.length))]
-
-    this.setState({
-      recommendedMovie: newMovie,
-      modalOpen: true,
-    })
-  }
-
-  handleClose = () => {
-    this.setState({
-      recommendedMovie: {
-        id: "",
-        title: "",
-        poster_path: "",
-        backdrop_path: "",
-        genre_ids: [],
-      },
-      modalOpen: false,
-    })
-  }
-
-  render() {
-    const { modalOpen, recommendedMovie } = this.state
-    const tmdbURL = `https://www.themoviedb.org/movie/${recommendedMovie.id}`
+    const tmdbURL = `https://www.themoviedb.org/movie/${recommendedMovie.id}`;
     const genreNames = recommendedMovie.genre_ids
-      .map(id => movieGenres[id])
-      .join(", ")
-    console.log("recommendedMovie", recommendedMovie)
+      .map((id: React.ReactText) => movieGenres[id])
+      .join(", ");
 
     return (
-      <RecommendedWrapper>
-        <SuperFab
-          color="primary"
-          variant="extended"
-          aria-label="Choose for Me"
-          onClick={this.handleClick}
-        >
-          Choose for Me
-        </SuperFab>
-        <Dialog
-          onClose={this.handleClose}
-          aria-labelledby="simple-dialog-title"
-          open={modalOpen}
-        >
-          <DialogTitle id="simple-dialog-title">
-            Recommended Movie:{" "}
-            <Link href={tmdbURL} rel="noopener noreferrer" target="_blank">
-              {recommendedMovie.title}
-            </Link>
-          </DialogTitle>
-          <DialogContent>
-            <RecommendedMovie>
-              <ImageContainer posterPath={recommendedMovie.poster_path} />
-              <RecommendedInfo>
-                <Typography>
-                  <b>Release Date:</b> {recommendedMovie.release_date}
-                </Typography>
-                <Typography>
-                  <b>Genres:</b> {genreNames}
-                </Typography>
-                <Typography>
-                  <b>Description:</b> {recommendedMovie.overview}
-                </Typography>
-              </RecommendedInfo>
-            </RecommendedMovie>
-            <SuperButton
-              variant="contained"
-              color="primary"
-              onClick={this.handleClick}
-            >
-              Give me another
-            </SuperButton>
-          </DialogContent>
-        </Dialog>
-      </RecommendedWrapper>
-    )
+      <Dialog
+        onClose={() => setIsModalOpen(false)}
+        aria-labelledby="simple-dialog-title"
+        open={isModalOpen}
+      >
+        <DialogTitle id="simple-dialog-title">
+          Recommended Movie:{" "}
+          <Link href={tmdbURL} rel="noopener noreferrer" target="_blank">
+            {recommendedMovie.title}
+          </Link>
+        </DialogTitle>
+        <DialogContent>
+          <RecommendedMovie>
+            <ImageContainer posterPath={recommendedMovie.poster_path} />
+            <RecommendedInfo>
+              <Typography>
+                <b>Release Date:</b> {recommendedMovie.release_date}
+              </Typography>
+              <Typography>
+                <b>Genres:</b> {genreNames}
+              </Typography>
+              <Typography>
+                <b>Description:</b> {recommendedMovie.overview}
+              </Typography>
+            </RecommendedInfo>
+          </RecommendedMovie>
+          <SuperButton
+            variant="contained"
+            color="primary"
+            onClick={handleChooseClick}
+          >
+            Give me another
+          </SuperButton>
+        </DialogContent>
+      </Dialog>
+    );
   }
+
+  return (
+    <RecommendedWrapper>
+      <SuperFab
+        color="primary"
+        variant="extended"
+        aria-label="Choose for Me"
+        onClick={handleChooseClick}
+      >
+        Choose for Me
+      </SuperFab>
+      {renderDialog()}
+    </RecommendedWrapper>
+  );
 }
 
-export default RandomSelect
+export default RandomSelect;

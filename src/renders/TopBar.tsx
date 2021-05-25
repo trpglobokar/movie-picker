@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { FunctionComponent, useState } from "react"
 import styled from "styled-components"
 import {
   AppBar,
@@ -29,97 +29,50 @@ interface TopBarProps {
   listName: string;
 }
 
-interface TopBarState {
-  modalOpen: boolean;
-  defaultLists: any; //TODO: make this specific
-}
+const TopBar:FunctionComponent<TopBarProps> = ({ editListId, listId, listName }) => {
+  const selectableLists = defaultLists.lists; //TODO: add to state, make selectable based on user input
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-class TopBar extends React.Component<TopBarProps, TopBarState> {
-  constructor(props: TopBarProps) {
-    super(props)
-
-    this.state = {
-      modalOpen: false,
-      defaultLists: defaultLists.lists,
-    }
-  }
-
-  async componentDidMount() {
-    //TODO: pull default lists from accountId
-    /*const accountId = "trpglobokar"
-    const baseURL = `https://api.themoviedb.org/4/account/${accountId}/lists?api_key=${API_KEY}`
-    let response = await fetch(baseURL)
-    let json = await response.json()
-    console.log("json", json)*/
-  }
-
-  handleClick = () => {
-    this.setState({
-      modalOpen: true,
-    })
-  }
-
-  handleClose = () => {
-    this.setState({
-      modalOpen: false,
-    })
-  }
-
-  renderSampleLists() {
-    const { editListId, listId } = this.props
-    const { defaultLists } = this.state
-
-    return defaultLists.map((list:any) => {
-      return (
-        <FormControlLabel
-          key={list.id}
-          control={
-            <Radio
-              checked={listId === list.id}
-              onChange={() => editListId(list.id)}
-              value={list.id}
-            />
-          }
-          label={list.name}
-        />
-      )
-    })
-  }
-
-  render() {
-    const { modalOpen } = this.state
-
-    return (
-      <AppBar position="static" color="secondary">
-        <Toolbar>
-          <AppTitle variant="h6" color="inherit">
-            Movie Picker
-          </AppTitle>
-          <Typography variant="h6" color="inherit">
-            {this.props.listName}
-          </Typography>
-          <IconButton
-            aria-label="EditList"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={this.handleClick}
-            color="inherit"
-          >
-            <Edit />
-          </IconButton>
-        </Toolbar>
-        <Dialog
-          onClose={this.handleClose}
-          aria-labelledby="simple-dialog-title"
-          open={modalOpen}
+  return (
+    <AppBar position="static" color="secondary">
+      <Toolbar>
+        <AppTitle variant="h6" color="inherit">Movie Picker</AppTitle>
+        <Typography variant="h6" color="inherit">{listName}</Typography>
+        <IconButton
+          aria-label="EditList"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={() => setIsModalOpen(true)}
+          color="inherit"
         >
-          <DialogTitle id="simple-dialog-title">Change Movie List</DialogTitle>
-          <DialogContent>{this.renderSampleLists()}</DialogContent>
-        </Dialog>
-      </AppBar>
-    )
-  }
+          <Edit />
+        </IconButton>
+      </Toolbar>
+      <Dialog
+        onClose={() => setIsModalOpen(false)}
+        aria-labelledby="simple-dialog-title"
+        open={isModalOpen}
+      >
+        <DialogTitle id="simple-dialog-title">Change Movie List</DialogTitle>
+        <DialogContent>
+          {selectableLists.map((list:any) =>
+            <FormControlLabel
+              key={list.id}
+              control={
+                <Radio
+                  checked={listId === list.id}
+                  onChange={() => editListId(list.id)}
+                  value={list.id}
+                />
+              }
+              label={list.name}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </AppBar>
+  )
 }
 
 export default TopBar

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { FunctionComponent, useEffect, useState } from "react"
 import {
   CircularProgress,
   Grid,
@@ -36,20 +36,6 @@ const MovieListWrapper = styled.div`
   overflow: scroll;
 `
 
-interface MPState {
-  playOrPause?: string;
-  listId: string;
-  listName: string;
-  listDescription: string;
-  isLoaded: boolean;
-  recommendedMovie: string;
-  seenBy: string[];
-  selectedGenres: any[]; //TODO: figure out what type this is
-  selectedRating: number;
-  movies: any[];
-  filteredMovies: any[];
-}
-
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#23B5D3", contrastText: "#FBFBFB" },
@@ -71,129 +57,102 @@ const theme = createMuiTheme({
   },
 })
 
-// 'HelloProps' describes the shape of props.
-// State is never set so we use the '{}' type.
-export class MoviePicker extends React.Component<{}, MPState> {
-  constructor(props:{}) {
-    super(props);
-    
-    this.state = {
-      listId: "108073",
-      listName: "",
-      listDescription: "",
-      isLoaded: true,
-      recommendedMovie: "",
-      seenBy: ["Jake", "Rocky"],
-      selectedGenres: [],
-      selectedRating: 1,
-      movies: [],
-      filteredMovies: [],
-    };
-  }
+const MoviePicker:FunctionComponent = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [filteredMovies, setFilteredMovies] = useState<any[]>([]); //TODO: make a custom movie type
+  const [listId, setListId] = useState("108073"); //TODO: combo these into a single list object
+  const [listName, setListName] = useState("");
+  const [movies, setMovies] = useState<any[]>([]); //TODO: name this listMovies
+  const [selectedGenres, setSelectedGenres] = useState<any[]>([]);
+  const [selectedRating, setSelectedRating] = useState(1);
 
-  async componentDidMount() {
-    const { listId } = this.state
-    this._loadMovies(listId)
-  }
+  useEffect(() => {
+    let ignore = false;
 
-  //TODO: move this to a utils file
-  async _loadMovies(listId: string) {
-    let totalMovies: any[] = []
-    const baseURL: string = `https://api.themoviedb.org/4/list/${listId}?api_key=${TMDB_API_KEY}&language=en-US`
-    let flexURL: string = baseURL
-    let resolved: boolean = false
-    let listDescription: string = ""
-    let listName: string = ""
+    async function fetchData() { //TODO: put into utils file for cleanliness
+      let totalMovies: any[] = [];
+      const baseURL: string = `https://api.themoviedb.org/4/list/${listId}?api_key=${TMDB_API_KEY}&language=en-US`;
+      let flexURL: string = baseURL;
+      let resolved: boolean = false;
+      let listName: string = "";
 
-    try {
-      while (!resolved) {
-        let response = await fetch(flexURL)
-        let json = await response.json()
-        listDescription = json.description
-        listName = json.name
-        totalMovies = totalMovies.concat(json.results)
-        if (json.page < json.total_pages) {
-          flexURL = `${baseURL}&page=${json.page + 1}`
-        } else {
-          resolved = true
+      try {
+        while (!resolved) {
+          let response = await fetch(flexURL);
+          let json = await response.json();
+          listName = json.name;
+          totalMovies = totalMovies.concat(json.results);
+          if (json.page < json.total_pages) {
+            flexURL = `${baseURL}&page=${json.page + 1}`;
+          } else {
+            resolved = true;
+          }
         }
+      } catch (err) {
+        alert(err); // TypeError: failed to fetch
       }
-    } catch (err) {
-      alert(err) // TypeError: failed to fetch
+
+      if (!ignore) {
+        setListId(listId);
+        setListName(listName);
+        setMovies(totalMovies);
+        setFilteredMovies(totalMovies); //TODO: filter this as well
+        setIsLoaded(true);
+      };
     }
 
-    this.setState({
-      isLoaded: true,
-      listDescription,
-      listId,
-      listName,
-      movies: totalMovies,
-      filteredMovies: totalMovies, //TODO: filter this as well
-    })
-  }
+    fetchData();
+    return () => { ignore = true; }
+  }, [listId]);
 
-  editListId = (listId: string) => {
-    //this.setState({ listId })
-    this._loadMovies(listId)
-  }
-
-  filterDaMovies(selectedGenres: any[], selectedRating: number) {
-    const movies = this.state.movies
-      .filter(movie => movie.vote_average > selectedRating)
-      .filter(movie =>
-        selectedGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
-      )
-    return movies
-  }
-
-  render() {
-    if (!this.state.isLoaded) {
-      return ( //TODO: break this into its own component
-        <MuiThemeProvider theme={theme}>
-          <CenterFlex>
-            <LoadingText>Loading...</LoadingText>
-            <CircularProgress />
-          </CenterFlex>
-        </MuiThemeProvider>
-      )
-    }
-    return (
+  if (!isLoaded) {
+    return ( //TODO: break this into its own component + add shimmers
       <MuiThemeProvider theme={theme}>
-        <AppContainer>
-          <TopBar
-            editListId={this.editListId}
-            listId={this.state.listId}
-            listName={this.state.listName}
-          />
-          <Grid container>
-            <Grid item xs={4}>
-              <ToggleMaster
-                selectedRating={this.state.selectedRating}
-                selectedGenres={this.state.selectedGenres}
-                updateSelections={(selectedGenres:any[], selectedRating:number) => {
-                  const filteredMovies = this.filterDaMovies(
-                    selectedGenres,
-                    selectedRating
-                  )
-                  this.setState({
-                    selectedGenres,
-                    selectedRating,
-                    filteredMovies,
-                  })
-                }}
-              />
-            </Grid>
-            <Grid item xs={8}>
-              <MovieListWrapper>
-                <AllMovies movies={this.state.filteredMovies} />
-              </MovieListWrapper>
-            </Grid>
-          </Grid>
-          <RandomSelect filteredMovies={this.state.filteredMovies} />
-          <WelcomeDialog />
-        </AppContainer>
+        <CenterFlex>
+          <LoadingText>Loading...</LoadingText>
+          <CircularProgress />
+        </CenterFlex>
       </MuiThemeProvider>
     )
   }
 
-}
+  return (
+    <MuiThemeProvider theme={theme}>
+      <AppContainer>
+        <TopBar
+          editListId={(listId: string) => setListId(listId)}
+          listId={listId}
+          listName={listName}
+        />
+        <Grid container>
+          <Grid item xs={4}>
+            <ToggleMaster
+              selectedRating={selectedRating}
+              selectedGenres={selectedGenres}
+              updateSelections={(selectedGenres:any[], selectedRating:number) => {
+                const filteredMovies = movies
+                  .filter(movie => movie.vote_average > selectedRating)
+                  .filter(movie =>
+                    selectedGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
+                  );
+
+                setSelectedGenres(selectedGenres);
+                setSelectedRating(selectedRating);
+                setFilteredMovies(filteredMovies);
+              }}
+            />
+          </Grid>
+          <Grid item xs={8}>
+            <MovieListWrapper>
+              <AllMovies movies={filteredMovies} />
+            </MovieListWrapper>
+          </Grid>
+        </Grid>
+        <RandomSelect filteredMovies={filteredMovies} />
+        <WelcomeDialog />
+      </AppContainer>
+    </MuiThemeProvider>
+  )
+};
+
+export default MoviePicker;
