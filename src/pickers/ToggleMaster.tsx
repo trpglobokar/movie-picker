@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React, { FunctionComponent } from "react"
 import styled from "styled-components"
 
 import RatingSelector from "./RatingSelector"
@@ -13,52 +13,46 @@ const PickerWrapper = styled.div`
 `
 
 interface TMProps {
-  selectedRating: number;
   selectedGenres: string[];
+  selectedRating: number;
   updateSelections: (selectedGenres: string[], selectedRating: number) => void;
 }
 
-class ToggleMaster extends Component<TMProps> {
-  constructor(props: TMProps) {
-    super(props)
-  }
-
-  setGenre = (genreId: string) => {
-    let newGenres = this.props.selectedGenres
+const ToggleMaster:FunctionComponent<TMProps> = ({ selectedGenres, selectedRating, updateSelections }) => {
+  const setGenre = (genreId: string) => {
+    let newGenres = selectedGenres;
 
     if (newGenres.includes(genreId)) {
-      newGenres = newGenres.filter(g => g !== genreId)
+      newGenres = newGenres.filter(g => g !== genreId);
     } else {
-      newGenres.push(genreId)
+      newGenres.push(genreId);
     }
 
-    this.props.updateSelections(
+    updateSelections(
       newGenres,
-      this.props.selectedRating
-    )
-  }
+      selectedRating
+    );
+  };
 
-  setRating = (rating: number) => {
-    this.props.updateSelections(
-      this.props.selectedGenres,
+  const setRating = (rating: number) => {
+    updateSelections(
+      selectedGenres,
       rating
-    )
-  }
+    );
+  };
 
-  render() {
-    return (
-      <PickerWrapper>
-        <RatingSelector
-          selectedRating={this.props.selectedRating}
-          setRating={this.setRating}
-        />
-        <ToggleGenre
-          selectedGenres={this.props.selectedGenres}
-          toggleGenre={this.setGenre}
-        />
-      </PickerWrapper>
-    )
-  }
-}
+  return (
+    <PickerWrapper>
+      <RatingSelector
+        selectedRating={selectedRating}
+        setRating={setRating}
+      />
+      <ToggleGenre
+        selectedGenres={selectedGenres}
+        toggleGenre={setGenre}
+      />
+    </PickerWrapper>
+  )
+};
 
-export default ToggleMaster
+export default ToggleMaster;

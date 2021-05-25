@@ -26,10 +26,10 @@ interface AllMoviesProps {
 
 const movieGenres:any = movieGenresJson;
 
-const AllMovies:FunctionComponent<AllMoviesProps> = (props) => {
+const AllMovies:FunctionComponent<AllMoviesProps> = ({ movies }) => {
   return (
     <ListCaptain>
-      {props.movies.map(movie => {
+      {movies.map(movie => {
         const genreIDs = movie.genre_ids
         const genreNames = genreIDs.map(id => movieGenres[id])
 
