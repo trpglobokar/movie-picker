@@ -127,7 +127,7 @@ const RandomSelect:FunctionComponent<RSProps> = ({ filteredMovies }) => {
         aria-label="Choose for Me"
         onClick={handleChooseClick}
       >
-        Choose for Meeee
+        Choose for Me
       </SuperFab>
       {renderDialog()}
     </RecommendedWrapper>

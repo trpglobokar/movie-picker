@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom"
 import "./static/index.css"
 //import * as serviceWorker from "./serviceWorker"
 
-import { MoviePicker } from "./MoviePicker";
+import MoviePicker from "./MoviePicker"
 
 ReactDOM.render(
     <MoviePicker />,
