@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from "react"
+import React, { FunctionComponent } from "react"
 import {
   CircularProgress,
   Grid,
@@ -14,8 +14,9 @@ import RandomSelect from "./renders/RandomSelect"
 import ToggleMaster from "./pickers/ToggleMaster"
 
 import "./static/fonts.css"
-import { useAppSelector, useAppDispatch } from "./utils/hooks"
-import { loadListByIdAsync, selectList } from "./utils/List"
+import { useAppSelector } from "./utils/hooks"
+import { selectList } from "./utils/List"
+import { selectFilteredMovies } from "./utils/Filters"
 
 const CenterFlex = styled.div`
   height: 100%;
@@ -58,13 +59,7 @@ const theme = createMuiTheme({
 })
 
 const MoviePicker:FunctionComponent = () => {
-  const [filteredMovies, setFilteredMovies] = useState<any[]>([]);
-
-  const [selectedGenres, setSelectedGenres] = useState<any[]>([]);
-  const [selectedRating, setSelectedRating] = useState(1);
-
   const list = useAppSelector(selectList);
-  const dispatch = useAppDispatch();
 
   if (!list.isLoaded) {
     return ( //TODO: break this into its own component + add shimmers
@@ -83,29 +78,15 @@ const MoviePicker:FunctionComponent = () => {
         <TopBar />
         <Grid container>
           <Grid item xs={4}>
-            <ToggleMaster
-              selectedRating={selectedRating}
-              selectedGenres={selectedGenres}
-              updateSelections={(selectedGenres:any[], selectedRating:number) => {
-                const filteredMovies = list.movies
-                  .filter(movie => movie.vote_average > selectedRating)
-                  .filter(movie =>
-                    selectedGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
-                  );
-
-                setSelectedGenres(selectedGenres);
-                setSelectedRating(selectedRating);
-                setFilteredMovies(filteredMovies);
-              }}
-            />
+            <ToggleMaster />
           </Grid>
           <Grid item xs={8}>
             <MovieListWrapper>
-              <AllMovies movies={list.filteredMovies} />
+              <AllMovies />
             </MovieListWrapper>
           </Grid>
         </Grid>
-        <RandomSelect filteredMovies={list.filteredMovies} />
+        <RandomSelect />
         <WelcomeDialog />
       </AppContainer>
     </MuiThemeProvider>

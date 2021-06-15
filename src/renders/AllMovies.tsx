@@ -9,23 +9,22 @@ import {
 import styled from "styled-components"
 
 import movieGenresJson from "../static/movieGenres.json"
-import { Movie } from "../utils/List"
+import { useAppSelector } from "../utils/hooks"
+import { selectFilteredMovies } from "../utils/Filters"
 
 const ListCaptain = styled(List)`
   height: 100%;
   overflow: scroll;
 `
 
-interface AllMoviesProps {
-  movies: Movie[];
-}
-
 const movieGenres:any = movieGenresJson;
 
-const AllMovies:FunctionComponent<AllMoviesProps> = ({ movies }) => {
+const AllMovies:FunctionComponent = () => {
+  const filteredMovies = useAppSelector(selectFilteredMovies);
+
   return (
     <ListCaptain>
-      {movies.map(movie => {
+      {filteredMovies.map(movie => {
         const genreIDs = movie.genre_ids
         const genreNames = genreIDs.map(id => movieGenres[id])
 

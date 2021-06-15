@@ -9,6 +9,8 @@ import {
   Typography,
 } from "@material-ui/core"
 import movieGenresJson from "../static/movieGenres.json"
+import { useAppSelector } from "../utils/hooks";
+import { selectFilteredMovies } from "../utils/Filters";
 
 const movieGenres:any = movieGenresJson;
 
@@ -52,23 +54,16 @@ const SuperButton = styled(Button)`
   margin: 8px;
 `
 
-interface RSProps {
-  filteredMovies: any[];
-}
+const RandomSelect:FunctionComponent = () => {
+  const filteredMovies = useAppSelector(selectFilteredMovies);
+  const selectRandomMovie = () => filteredMovies[Math.floor(Math.random() * Math.floor(filteredMovies.length))];
 
-const RandomSelect:FunctionComponent<RSProps> = ({ filteredMovies }) => {
-  const randomMovie =
-    filteredMovies[Math.floor(Math.random() * Math.floor(filteredMovies.length))];
-
-  const [recommendedMovie, setRecommendedMovie] = useState(randomMovie);
+  const [recommendedMovie, setRecommendedMovie] = useState(selectRandomMovie());
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleChooseClick = () => {
-    const randomMovie =
-      filteredMovies[Math.floor(Math.random() * Math.floor(filteredMovies.length))];
-    
     setIsModalOpen(true);
-    setRecommendedMovie(randomMovie);
+    setRecommendedMovie(selectRandomMovie());
   };
 
   //TODO: break into separate component

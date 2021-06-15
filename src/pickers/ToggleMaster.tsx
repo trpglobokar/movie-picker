@@ -12,45 +12,12 @@ const PickerWrapper = styled.div`
   padding: 16px;
 `
 
-interface TMProps {
-  selectedGenres: string[];
-  selectedRating: number;
-  updateSelections: (selectedGenres: string[], selectedRating: number) => void;
-}
-
-const ToggleMaster:FunctionComponent<TMProps> = ({ selectedGenres, selectedRating, updateSelections }) => {
-  const setGenre = (genreId: string) => {
-    let newGenres = selectedGenres;
-
-    if (newGenres.includes(genreId)) {
-      newGenres = newGenres.filter(g => g !== genreId);
-    } else {
-      newGenres.push(genreId);
-    }
-
-    updateSelections(
-      newGenres,
-      selectedRating
-    );
-  };
-
-  const setRating = (rating: number) => {
-    updateSelections(
-      selectedGenres,
-      rating
-    );
-  };
+const ToggleMaster:FunctionComponent = () => {
 
   return (
     <PickerWrapper>
-      <RatingSelector
-        selectedRating={selectedRating}
-        setRating={setRating}
-      />
-      <ToggleGenre
-        selectedGenres={selectedGenres}
-        toggleGenre={setGenre}
-      />
+      <RatingSelector />
+      <ToggleGenre />
     </PickerWrapper>
   )
 };

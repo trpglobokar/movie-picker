@@ -8,6 +8,8 @@ import { Typography } from '@material-ui/core'
 import movieGenresJson from '../static/movieGenres.json';
 
 import styled from "styled-components"
+import { useAppSelector, useAppDispatch } from '../utils/hooks';
+import { selectFilteredGenres, updateSelectedGenres } from '../utils/Filters';
 
 const SuperFormGroup = styled(FormGroup)`
   flex-direction: row!important;
@@ -16,14 +18,12 @@ const SuperFormControlLabel = styled(FormControlLabel)`
   min-width: 160px;
 `
 
-interface TGProps {
-  selectedGenres: string[];
-  toggleGenre: (genreId: string) => void;
-}
+const movieGenres:any = movieGenresJson; //TODO: make this an enum and remove the parseInts
 
-const movieGenres:any = movieGenresJson;
+const ToggleGenre:FunctionComponent = () => {
+  const selectedGenres = useAppSelector(selectFilteredGenres);
+  const dispatch = useAppDispatch();
 
-const ToggleGenre:FunctionComponent<TGProps> = ({ selectedGenres, toggleGenre }) => {
   const renderGenreList = () => {  
     return (
       <SuperFormGroup>
@@ -32,8 +32,8 @@ const ToggleGenre:FunctionComponent<TGProps> = ({ selectedGenres, toggleGenre })
             key={id}
             control={
               <Checkbox
-                checked={selectedGenres.includes(id)}
-                onChange={() => { toggleGenre(id) }}
+                checked={selectedGenres.includes(parseInt(id))}
+                onChange={() => dispatch(updateSelectedGenres(parseInt(id)))}
                 value={id}
               />
             }
