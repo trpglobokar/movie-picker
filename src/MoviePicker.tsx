@@ -80,11 +80,7 @@ const MoviePicker:FunctionComponent = () => {
   return (
     <MuiThemeProvider theme={theme}>
       <AppContainer>
-        <TopBar
-          editListId={(id: string) => dispatch(loadListByIdAsync(id))}
-          listId={list.id}
-          listName={list.name}
-        />
+        <TopBar />
         <Grid container>
           <Grid item xs={4}>
             <ToggleMaster

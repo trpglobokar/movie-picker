@@ -12,6 +12,8 @@ import {
 } from "@material-ui/core"
 import Edit from "@material-ui/icons/Edit"
 import defaultLists from "../static/defaultLists.json"
+import { useAppSelector, useAppDispatch } from "../utils/hooks"
+import { selectList, loadListByIdAsync } from "../utils/List"
 
 const AppTitle = styled(Typography)`
   flex-grow: 1;
@@ -23,14 +25,11 @@ const DialogContent = styled.div`
   padding: 0 24px 24px 24px;
 `
 
-interface TopBarProps {
-  editListId: (listId: string) => void;
-  listId: string;
-  listName: string;
-}
-
-const TopBar:FunctionComponent<TopBarProps> = ({ editListId, listId, listName }) => {
+const TopBar:FunctionComponent = () => {
   const selectableLists = defaultLists.lists; //TODO: add to state, make selectable based on user input
+
+  const selectedList = useAppSelector(selectList);
+  const dispatch = useAppDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -38,7 +37,7 @@ const TopBar:FunctionComponent<TopBarProps> = ({ editListId, listId, listName })
     <AppBar position="static" color="secondary">
       <Toolbar>
         <AppTitle variant="h6" color="inherit">Movie Picker</AppTitle>
-        <Typography variant="h6" color="inherit">{listName}</Typography>
+        <Typography variant="h6" color="inherit">{selectedList.name}</Typography>
         <IconButton
           aria-label="EditList"
           aria-controls="menu-appbar"
@@ -61,8 +60,8 @@ const TopBar:FunctionComponent<TopBarProps> = ({ editListId, listId, listName })
               key={list.id}
               control={
                 <Radio
-                  checked={listId === list.id}
-                  onChange={() => editListId(list.id)}
+                  checked={selectedList.id === list.id}
+                  onChange={() => dispatch(loadListByIdAsync(list.id))}
                   value={list.id}
                 />
               }
