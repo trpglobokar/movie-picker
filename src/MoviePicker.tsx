@@ -14,8 +14,8 @@ import RandomSelect from "./renders/RandomSelect"
 import ToggleMaster from "./pickers/ToggleMaster"
 
 import "./static/fonts.css"
-
-const TMDB_API_KEY = process.env.REACT_APP_TMDB_API_KEY
+import { useAppSelector, useAppDispatch } from "./utils/hooks"
+import { loadListByIdAsync, selectList } from "./utils/List"
 
 const CenterFlex = styled.div`
   height: 100%;
@@ -58,54 +58,15 @@ const theme = createMuiTheme({
 })
 
 const MoviePicker:FunctionComponent = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState<any[]>([]); //TODO: make a custom movie type
-  const [listId, setListId] = useState("108073"); //TODO: combo these into a single list object
-  const [listName, setListName] = useState("");
-  const [movies, setMovies] = useState<any[]>([]); //TODO: name this listMovies
+  const [filteredMovies, setFilteredMovies] = useState<any[]>([]);
+
   const [selectedGenres, setSelectedGenres] = useState<any[]>([]);
   const [selectedRating, setSelectedRating] = useState(1);
 
-  useEffect(() => {
-    let ignore = false;
+  const list = useAppSelector(selectList);
+  const dispatch = useAppDispatch();
 
-    async function fetchData() { //TODO: put into utils file for cleanliness
-      let totalMovies: any[] = [];
-      const baseURL: string = `https://api.themoviedb.org/4/list/${listId}?api_key=${TMDB_API_KEY}&language=en-US`;
-      let flexURL: string = baseURL;
-      let resolved: boolean = false;
-      let listName: string = "";
-
-      try {
-        while (!resolved) {
-          let response = await fetch(flexURL);
-          let json = await response.json();
-          listName = json.name;
-          totalMovies = totalMovies.concat(json.results);
-          if (json.page < json.total_pages) {
-            flexURL = `${baseURL}&page=${json.page + 1}`;
-          } else {
-            resolved = true;
-          }
-        }
-      } catch (err) {
-        alert(err); // TypeError: failed to fetch
-      }
-
-      if (!ignore) {
-        setListId(listId);
-        setListName(listName);
-        setMovies(totalMovies);
-        setFilteredMovies(totalMovies); //TODO: filter this as well
-        setIsLoaded(true);
-      };
-    }
-
-    fetchData();
-    return () => { ignore = true; }
-  }, [listId]);
-
-  if (!isLoaded) {
+  if (!list.isLoaded) {
     return ( //TODO: break this into its own component + add shimmers
       <MuiThemeProvider theme={theme}>
         <CenterFlex>
@@ -120,9 +81,9 @@ const MoviePicker:FunctionComponent = () => {
     <MuiThemeProvider theme={theme}>
       <AppContainer>
         <TopBar
-          editListId={(listId: string) => setListId(listId)}
-          listId={listId}
-          listName={listName}
+          editListId={(id: string) => dispatch(loadListByIdAsync(id))}
+          listId={list.id}
+          listName={list.name}
         />
         <Grid container>
           <Grid item xs={4}>
@@ -130,7 +91,7 @@ const MoviePicker:FunctionComponent = () => {
               selectedRating={selectedRating}
               selectedGenres={selectedGenres}
               updateSelections={(selectedGenres:any[], selectedRating:number) => {
-                const filteredMovies = movies
+                const filteredMovies = list.movies
                   .filter(movie => movie.vote_average > selectedRating)
                   .filter(movie =>
                     selectedGenres.every(genre => movie.genre_ids.includes(parseInt(genre)))
@@ -144,11 +105,11 @@ const MoviePicker:FunctionComponent = () => {
           </Grid>
           <Grid item xs={8}>
             <MovieListWrapper>
-              <AllMovies movies={filteredMovies} />
+              <AllMovies movies={list.filteredMovies} />
             </MovieListWrapper>
           </Grid>
         </Grid>
-        <RandomSelect filteredMovies={filteredMovies} />
+        <RandomSelect filteredMovies={list.filteredMovies} />
         <WelcomeDialog />
       </AppContainer>
     </MuiThemeProvider>

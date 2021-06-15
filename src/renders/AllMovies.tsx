@@ -9,6 +9,7 @@ import {
 import styled from "styled-components"
 
 import movieGenresJson from "../static/movieGenres.json"
+import { Movie } from "../utils/List"
 
 const ListCaptain = styled(List)`
   height: 100%;
@@ -16,12 +17,7 @@ const ListCaptain = styled(List)`
 `
 
 interface AllMoviesProps {
-  movies: {
-    id: string,
-    title: string,
-    backdrop_path: string,
-    genre_ids: string[]
-  }[]; //TODO: make movies its own interface in a utils file
+  movies: Movie[];
 }
 
 const movieGenres:any = movieGenresJson;
