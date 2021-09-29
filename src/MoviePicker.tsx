@@ -1,22 +1,17 @@
-import React, { FunctionComponent } from "react"
-import {
-  CircularProgress,
-  Grid,
-  Typography,
-} from "@material-ui/core"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
-import styled from "styled-components"
+import React, { FunctionComponent } from "react";
+import { CircularProgress, Grid, Typography } from "@material-ui/core";
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import styled from "styled-components";
 
-import TopBar from "./renders/TopBar"
-import WelcomeDialog from "./renders/WelcomeDialog"
-import AllMovies from "./renders/AllMovies"
-import RandomSelect from "./renders/RandomSelect"
-import ToggleMaster from "./pickers/ToggleMaster"
+import TopBar from "./renders/TopBar";
+import WelcomeDialog from "./renders/WelcomeDialog";
+import AllMovies from "./renders/AllMovies";
+import RandomSelect from "./renders/RandomSelect";
+import ToggleMaster from "./pickers/ToggleMaster";
 
-import "./static/fonts.css"
-import { useAppSelector } from "./utils/hooks"
-import { selectList } from "./utils/List"
-import { selectFilteredMovies } from "./utils/Filters"
+import "./static/fonts.css";
+import { useAppSelector } from "./utils/hooks";
+import { selectList } from "./utils/List";
 
 const CenterFlex = styled.div`
   height: 100%;
@@ -24,18 +19,18 @@ const CenterFlex = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 const LoadingText = styled(Typography)`
   margin-right: 16px !important;
-`
+`;
 const AppContainer = styled.div`
   height: 100%;
-`
+`;
 const MovieListWrapper = styled.div`
   margin: 16px 32px 0 32px;
   max-height: calc(100vh - 96px);
   overflow: scroll;
-`
+`;
 
 const theme = createMuiTheme({
   palette: {
@@ -56,21 +51,21 @@ const theme = createMuiTheme({
       '"Segoe UI Symbol"',
     ].join(","),
   },
-})
+});
 
-const MoviePicker:FunctionComponent = () => {
+const MoviePicker: FunctionComponent = () => {
   const list = useAppSelector(selectList);
 
-  if (!list.isLoaded) {
-    return ( //TODO: break this into its own component + add shimmers
-      <MuiThemeProvider theme={theme}>
-        <CenterFlex>
-          <LoadingText>Loading...</LoadingText>
-          <CircularProgress />
-        </CenterFlex>
-      </MuiThemeProvider>
-    )
-  }
+  const movieList = list.isLoaded ? (
+    <MovieListWrapper>
+      <AllMovies />
+    </MovieListWrapper>
+  ) : (
+    <CenterFlex>
+      <LoadingText>Loading...</LoadingText>
+      <CircularProgress />
+    </CenterFlex>
+  );
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -81,16 +76,14 @@ const MoviePicker:FunctionComponent = () => {
             <ToggleMaster />
           </Grid>
           <Grid item xs={8}>
-            <MovieListWrapper>
-              <AllMovies />
-            </MovieListWrapper>
+            {movieList}
           </Grid>
         </Grid>
         <RandomSelect />
         <WelcomeDialog />
       </AppContainer>
     </MuiThemeProvider>
-  )
+  );
 };
 
 export default MoviePicker;

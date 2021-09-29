@@ -1,6 +1,5 @@
-
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from './store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "./store";
 
 export interface FiltersState {
   rating: number;
@@ -13,7 +12,7 @@ const initialState: FiltersState = {
 };
 
 export const filterSlice = createSlice({
-  name: 'filter',
+  name: "filter",
   initialState,
   reducers: {
     changeRating: (state, action: PayloadAction<number>) => {
@@ -23,11 +22,11 @@ export const filterSlice = createSlice({
       let newGenres = state.genres;
 
       if (newGenres.includes(action.payload)) {
-        newGenres = newGenres.filter(genreId => genreId !== action.payload);
+        newGenres = newGenres.filter((genreId) => genreId !== action.payload);
       } else {
         newGenres.push(action.payload);
       }
-      
+
       state.genres = newGenres; //TODO: find cleaner way to write this
     },
   },
@@ -39,10 +38,10 @@ export const selectFilteredGenres = (state: RootState) => state.filters.genres;
 
 export const selectFilteredRating = (state: RootState) => state.filters.rating;
 
-export const selectFilteredMovies = (state: RootState) => state.list.movies
-  .filter(movie => movie.vote_average > state.filters.rating)
-  .filter(movie =>
-    state.filters.genres.every(genre => movie.genre_ids.includes(genre))
-  );;
-
+export const selectFilteredMovies = (state: RootState) =>
+  state.list.movies
+    .filter((movie) => movie.vote_average > state.filters.rating)
+    .filter((movie) =>
+      state.filters.genres.every((genre) => movie.genre_ids.includes(genre))
+    );
 export default filterSlice.reducer;
